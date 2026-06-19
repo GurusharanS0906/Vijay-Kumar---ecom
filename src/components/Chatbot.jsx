@@ -59,6 +59,26 @@ function getChatbotResponse(msg) {
     return `We have natural <strong>${matchedCategory}</strong> gemstones:<br><br>${prodList}<br><br><a href="/shop?cat=${encodeURIComponent(matchedCategory)}" style="color:var(--color-gold);text-decoration:underline">Browse Category</a>`;
   }
 
+  // Price sorting / budget query
+  if (matches(words, ['cheap', 'cheapest', 'budget', 'low price', 'affordable', 'under', 'price', 'cost', 'expensive'])) {
+    const numbers = rawMsg.match(/\d+/g);
+    let limit = 0;
+    if (numbers && numbers.length > 0) limit = parseInt(numbers[0]);
+    
+    let filtered = products;
+    if (limit > 0) {
+      if (rawMsg.includes('k')) limit *= 1000;
+      filtered = products.filter(p => p.price <= limit);
+    }
+    
+    const sorted = [...filtered].sort((a, b) => a.price - b.price).slice(0, 3);
+    if (sorted.length > 0) {
+      const listText = sorted.map(p => `• <a href="/product?id=${p.id}" style="color:var(--color-gold-dark)">${p.name}</a> - <strong>${formatPrice(p.price)}</strong>`).join('<br>');
+      return `Options ${limit > 0 ? 'under ' + formatPrice(limit) : 'available'}:<br><br>${listText}`;
+    }
+    return `We couldn't find items in that range. Browse our shop or contact us!${talkToExpertBtn}`;
+  }
+
   if (matches(words, ['bestseller','best','popular','premium','rare','luxury'])) {
     const filtered = products.filter(p => p.badge === 'Bestseller' || p.badge === 'Premium' || p.badge === 'Rare').slice(0, 3);
     const listText = filtered.map(p => `• <a href="/product?id=${p.id}" style="color:var(--color-gold-dark)">${p.name}</a> - <strong>${formatPrice(p.price)}</strong>`).join('<br>');
