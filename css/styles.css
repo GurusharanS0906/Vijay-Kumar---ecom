@@ -3848,3 +3848,134 @@ textarea.form-input { resize: vertical; min-height: 100px; }
     transform: translateY(-2px);
     box-shadow: 0 8px 20px rgba(37, 211, 102, 0.2);
 }
+
+/* ============================================
+   GLOBAL RESPONSIVENESS (MOBILE & DESKTOP)
+   ============================================ */
+
+/* Product Page Detail Grid */
+.product-detail-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+.product-gallery {
+    width: 100%;
+}
+.product-info-panel {
+    width: 100%;
+}
+
+@media (min-width: 992px) {
+    .product-detail-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 4rem;
+        align-items: start;
+    }
+    .product-gallery {
+        position: sticky;
+        top: 6rem; /* Stick to top on scroll */
+    }
+}
+
+/* Astrology Widget Responsiveness */
+@media (max-width: 576px) {
+    .astrology-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Pricing Breakdown Responsiveness */
+@media (max-width: 576px) {
+    .pricing-breakdown {
+        font-size: 0.8rem;
+        padding: 1rem;
+    }
+    .pricing-row.total {
+        font-size: 0.9rem;
+    }
+}
+
+/* Typography Resizing for Mobile */
+@media (max-width: 768px) {
+    .hero-title {
+        font-size: 2.5rem !important;
+    }
+    .hero-subtitle {
+        font-size: 1rem !important;
+    }
+    .section-title {
+        font-size: 2rem !important;
+    }
+    h1 {
+        font-size: 1.8rem !important;
+    }
+    h2 {
+        font-size: 1.5rem !important;
+    }
+    h3 {
+        font-size: 1.25rem !important;
+    }
+}
+
+/* Header & Hamburger Resizing */
+@media (max-width: 768px) {
+    .navbar {
+        padding: 0.75rem 1rem;
+    }
+    .logo-img {
+        max-height: 40px !important;
+    }
+    .mobile-menu-overlay {
+        z-index: 1000;
+    }
+    .mobile-menu {
+        z-index: 1001;
+    }
+}
+
+/* Product Grid Responsiveness */
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* 2 cols on mobile */
+    gap: 1rem;
+}
+@media (min-width: 768px) {
+    .product-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.5rem;
+    }
+}
+@media (min-width: 1024px) {
+    .product-grid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 2rem;
+    }
+}
+
+/* Cart & Checkout Adjustments */
+@media (max-width: 768px) {
+    .cart-drawer {
+        width: 100%;
+        max-width: 100%;
+    }
+    .checkout-grid {
+        grid-template-columns: 1fr;
+    }
+    .btn-lg {
+        padding: 0.75rem 1.5rem;
+        font-size: 0.9rem;
+    }
+}
+
+/* Footer Adjustments */
+@media (max-width: 768px) {
+    .footer-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+    .footer-newsletter {
+        grid-column: 1 / -1;
+    }
+}
