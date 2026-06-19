@@ -3212,6 +3212,7 @@ textarea.form-input { resize: vertical; min-height: 100px; }
         gap: 0.3rem;
         font-size: 0.55rem !important;
         padding: 0.2rem 0.5rem !important;
+    }
 }
 
 /* ============================================
