@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Collection — VijayKumar Diamonds & Gems</title>
+    <meta name="description" content="Explore our exquisite collection of natural, certified gemstones and fine handcrafted jewelry. GIA, GRS & IGI certified.">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="icon" href="images/logo.jpeg" type="image/jpeg">
+</head>
+<body>
+
+<!-- Page Loader -->
+<div id="page-loader" class="page-loader">
+    <img src="images/logo.jpeg" alt="VK">
+    <div class="loader-bar"><div class="loader-bar-inner"></div></div>
+</div>
+
+<!-- Dynamic Header -->
+<div id="header-root"></div>
+
+<!-- Shop Main Content -->
+<main class="container" style="padding-top: var(--space-xl); padding-bottom: var(--space-4xl);">
+    
+    <!-- Breadcrumbs -->
+    <div class="breadcrumbs" id="breadcrumbs">
+        <a href="index.html">Home</a> <span>/</span> <span class="current">Shop</span>
+    </div>
+
+    <!-- Page Header -->
+    <div class="section-header" style="text-align: left; margin-bottom: var(--space-xl);">
+        <span class="section-label">VK Catalog</span>
+        <h1 class="section-title" id="shop-title" style="font-size: 2.25rem;">Our Collection</h1>
+        <p class="section-subtitle" style="text-align: left; margin-left: 0;" id="product-count-text">Showing all products</p>
+        <div class="gold-line" style="margin-left: 0; margin-top: var(--space-sm);"></div>
+    </div>
+
+    <!-- Gem Circles Filter Bar -->
+    <section style="margin-bottom: var(--space-2xl);">
+        <div class="gem-circles hide-scrollbar" id="gem-circles-filter">
+            <button onclick="selectCategory('All')" class="gem-circle active-circle" data-cat="All" style="background: none; border: none; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 0.5rem; outline: none;">
+                <div class="gem-circle-img" style="display: flex; align-items: center; justify-content: center; background: var(--color-dark); color: var(--color-gold); font-size: 1.25rem;"><i class="fas fa-th-large"></i></div>
+                <span class="gem-circle-label">All</span>
+            </button>
+            <!-- Categories will be dynamically updated below if needed, or static maps -->
+        </div>
+    </section>
+
+    <!-- Search Bar Section -->
+    <div style="margin-bottom: var(--space-xl); max-width: 500px; position: relative;" id="shop-search-bar-wrap">
+        <i class="fas fa-search" style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--color-gray-400); font-size: 0.85rem;"></i>
+        <input type="text" id="shop-search-input" placeholder="Search gems, jewelry, categories, origin..." oninput="handleShopSearch(this.value)" style="width: 100%; padding: 0.7rem 1.5rem 0.7rem 2.5rem; font-size: 0.85rem; border-radius: var(--radius-md); border: 1.5px solid var(--color-gray-200); outline: none; transition: border-color 0.3s, box-shadow 0.3s; background: var(--color-white);" onfocus="this.style.borderColor='var(--color-gold)'; this.style.boxShadow='var(--shadow-gold)'" onblur="this.style.borderColor='var(--color-gray-200)'; this.style.boxShadow='none'">
+        <button id="shop-search-clear" onclick="clearShopSearch()" style="display: none; position: absolute; right: 1rem; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; color: var(--color-gray-400); font-size: 0.85rem; padding: 0.25rem;"><i class="fas fa-times"></i></button>
+    </div>
+
+    <!-- Filter & Sort Controls -->
+    <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: var(--space-md); margin-bottom: var(--space-xl); border-bottom: 1px solid var(--color-gray-200); padding-bottom: var(--space-md);">
+        <!-- Left side: Filter pills -->
+        <div class="filter-pills hide-scrollbar" id="category-pills">
+            <!-- Dynamically populated categories -->
+        </div>
+        
+        <!-- Right side: Sort dropdown -->
+        <div style="display: flex; align-items: center; gap: var(--space-sm);">
+            <label for="sort-select" style="font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-gray-500);">Sort By:</label>
+            <select id="sort-select" class="form-select" onchange="handleSortChange(this.value)" style="padding: 0.4rem 2rem 0.4rem 0.75rem; font-size: 0.75rem; font-weight: 600; border-radius: var(--radius-sm); border: 1px solid var(--color-gray-300); outline: none;">
+                <option value="Recommended">Recommended</option>
+                <option value="Price Low-High">Price: Low to High</option>
+                <option value="Price High-Low">Price: High to Low</option>
+                <option value="Highest Rated">Highest Rated</option>
+                <option value="Newest">Newest</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- Product Grid -->
+    <div class="product-grid" id="shop-product-grid">
+        <!-- Rendered by JS -->
+    </div>
+
+    <!-- Load More Button -->
+    <div id="load-more-container" style="text-align: center; margin-top: var(--space-3xl); display: none;">
+        <button id="load-more-btn" onclick="loadMoreProducts()" class="btn btn-outline-gold btn-lg">Load More Products <i class="fas fa-chevron-down" style="margin-left: 8px;"></i></button>
+    </div>
+
+</main>
+
+<!-- Dynamic Footer -->
+<div id="footer-root"></div>
+
+<!-- Scripts -->
+<script src="js/app.js"></script>
+<script>
+    // State management for Shop
+    let currentCategory = 'All';
+    let currentTypeFilter = 'All'; // 'gems' or 'jewelry'
+    let currentSort = 'Recommended';
+    let visibleProductsCount = 12;
+    let filteredProducts = [];
+    let currentSearchQuery = '';
+
+    // Initialize Shop Page
+    document.addEventListener('DOMContentLoaded', () => {
+        // Parse URL Parameters
+        const params = new URLSearchParams(window.location.search);
+        const catParam = params.get('cat');
+        const typeParam = params.get('type');
+        const searchParam = params.get('search') || params.get('q'); // Read search parameter
+
+        if (catParam) {
+            currentCategory = catParam;
+        }
+        if (typeParam) {
+            currentTypeFilter = typeParam;
+            if (typeParam === 'gems') {
+                document.getElementById('shop-title').textContent = 'Certified Loose Gemstones';
+            } else if (typeParam === 'jewelry') {
+                document.getElementById('shop-title').textContent = 'Handcrafted Fine Jewelry';
+            }
+        }
+        if (searchParam) {
+            currentSearchQuery = searchParam;
+            const input = document.getElementById('shop-search-input');
+            if (input) {
+                input.value = searchParam;
+                const clearBtn = document.getElementById('shop-search-clear');
+                if (clearBtn) clearBtn.style.display = 'block';
+            }
+        }
+
+        buildGemCirclesFilter();
+        buildCategoryPills();
+        applyFilterAndSort();
+    });
+
+    // Build Category scroll filters (circles)
+    function buildGemCirclesFilter() {
+        const container = document.getElementById('gem-circles-filter');
+        if (!container) return;
+
+        // Determine which list of categories to show based on typeParam
+        let categoriesToRender = gemCategories;
+        if (currentTypeFilter === 'jewelry') {
+            categoriesToRender = jewelryCategories;
+        } else if (currentTypeFilter === 'All') {
+            categoriesToRender = [...gemCategories, ...jewelryCategories];
+        }
+
+        // Render circles
+        let html = `
+            <div onclick="selectCategory('All')" class="gem-circle ${currentCategory === 'All' ? 'active' : ''}" style="cursor:pointer;">
+                <div class="gem-circle-img" style="display: flex; align-items: center; justify-content: center; background: var(--color-dark); color: var(--color-gold); font-size: 1.25rem;"><i class="fas fa-th-large"></i></div>
+                <span class="gem-circle-label">All</span>
+            </div>
+        `;
+
+        categoriesToRender.forEach(cat => {
+            const imgPath = categoryImages[cat] || 'images/ruby.png';
+            html += `
+                <div onclick="selectCategory('${cat}')" class="gem-circle ${currentCategory === cat ? 'active' : ''}" style="cursor:pointer;">
+                    <div class="gem-circle-img"><img src="${imgPath}" alt="${cat}"></div>
+                    <span class="gem-circle-label">${cat}</span>
+                </div>
+            `;
+        });
+
+        container.innerHTML = html;
+    }
+
+    // Build Category Filter pills
+    function buildCategoryPills() {
+        const container = document.getElementById('category-pills');
+        if (!container) return;
+
+        let categoriesToRender = ['All'];
+        if (currentTypeFilter === 'gems') {
+            categoriesToRender = ['All', ...gemCategories];
+        } else if (currentTypeFilter === 'jewelry') {
+            categoriesToRender = ['All', ...jewelryCategories];
+        } else {
+            categoriesToRender = ['All', ...gemCategories, ...jewelryCategories];
+        }
+
+        container.innerHTML = categoriesToRender.map(cat => {
+            const label = cat === 'All' ? 'All Items' : cat;
+            return `<button class="filter-pill ${currentCategory === cat ? 'active' : ''}" onclick="selectCategory('${cat}')">${label}</button>`;
+        }).join('');
+    }
+
+    // Handle Category selection
+    function selectCategory(cat) {
+        currentCategory = cat;
+        
+        // Highlight active circle and pill
+        document.querySelectorAll('#gem-circles-filter .gem-circle').forEach(el => {
+            const label = el.querySelector('.gem-circle-label').textContent;
+            if (label === cat || (cat === 'All' && label === 'All')) {
+                el.classList.add('active');
+            } else {
+                el.classList.remove('active');
+            }
+        });
+
+        document.querySelectorAll('#category-pills .filter-pill').forEach(el => {
+            if (el.textContent === cat || (cat === 'All' && el.textContent === 'All Items')) {
+                el.classList.add('active');
+            } else {
+                el.classList.remove('active');
+            }
+        });
+
+        // Update breadcrumbs
+        const crumbs = document.getElementById('breadcrumbs');
+        if (cat === 'All') {
+            crumbs.innerHTML = `<a href="index.html">Home</a> <span>/</span> <span class="current">Shop</span>`;
+        } else {
+            crumbs.innerHTML = `<a href="index.html">Home</a> <span>/</span> <a href="shop.html">Shop</a> <span>/</span> <span class="current">${cat}</span>`;
+        }
+
+        visibleProductsCount = 12; // Reset count
+        applyFilterAndSort();
+    }
+
+    // Handle Sort selection
+    function handleSortChange(sortVal) {
+        currentSort = sortVal;
+        applyFilterAndSort();
+    }
+
+    // Handle Shop Search input
+    function handleShopSearch(query) {
+        currentSearchQuery = query.trim();
+        const clearBtn = document.getElementById('shop-search-clear');
+        if (clearBtn) {
+            clearBtn.style.display = currentSearchQuery ? 'block' : 'none';
+        }
+        visibleProductsCount = 12; // Reset count
+        applyFilterAndSort();
+    }
+
+    // Clear Shop Search input
+    function clearShopSearch() {
+        const input = document.getElementById('shop-search-input');
+        if (input) {
+            input.value = '';
+            handleShopSearch('');
+        }
+    }
+
+    // Apply Filter and Sort logic
+    function applyFilterAndSort() {
+        // 1. FILTERING
+        filteredProducts = products.filter(p => {
+            // Filter by type (gems / jewelry)
+            if (currentTypeFilter === 'gems') {
+                if (!gemCategories.includes(p.category)) return false;
+            } else if (currentTypeFilter === 'jewelry') {
+                if (!jewelryCategories.includes(p.category)) return false;
+            }
+
+            // Filter by category
+            if (currentCategory !== 'All' && p.category !== currentCategory) {
+                return false;
+            }
+
+            // Filter by search query text
+            if (currentSearchQuery) {
+                const q = currentSearchQuery.toLowerCase();
+                const matches = p.name.toLowerCase().includes(q) ||
+                                p.category.toLowerCase().includes(q) ||
+                                p.desc.toLowerCase().includes(q) ||
+                                (p.origin && p.origin.toLowerCase().includes(q));
+                if (!matches) return false;
+            }
+
+            return true;
+        });
+
+        // 2. SORTING
+        if (currentSort === 'Price Low-High') {
+            filteredProducts.sort((a, b) => a.price - b.price);
+        } else if (currentSort === 'Price High-Low') {
+            filteredProducts.sort((a, b) => b.price - a.price);
+        } else if (currentSort === 'Highest Rated') {
+            filteredProducts.sort((a, b) => b.rating - a.rating);
+        } else if (currentSort === 'Newest') {
+            // Mock newer by sorting id descending
+            filteredProducts.sort((a, b) => b.id - a.id);
+        } else {
+            // Recommended (Default)
+            filteredProducts.sort((a, b) => {
+                // Prioritize bestsellers/popular
+                const valA = (a.badge === 'Bestseller' ? 2 : a.badge === 'Popular' ? 1 : 0);
+                const valB = (b.badge === 'Bestseller' ? 2 : b.badge === 'Popular' ? 1 : 0);
+                return valB - valA;
+            });
+        }
+
+        // Update product count text
+        const countText = document.getElementById('product-count-text');
+        if (countText) {
+            countText.textContent = `Showing ${Math.min(visibleProductsCount, filteredProducts.length)} of ${filteredProducts.length} certified items`;
+        }
+
+        renderPageProducts();
+    }
+
+    // Render Product list
+    function renderPageProducts() {
+        const grid = document.getElementById('shop-product-grid');
+        if (!grid) return;
+
+        if (filteredProducts.length === 0) {
+            grid.style.display = 'block';
+            grid.innerHTML = `
+                <div style="text-align:center; padding:5rem 1rem; color:var(--color-gray-500);">
+                    <i class="fas fa-gem" style="font-size:3rem; margin-bottom:1.5rem; opacity:0.3; display:block; color:var(--color-gold);"></i>
+                    <h3 style="font-family:var(--font-serif); font-size:1.5rem; margin-bottom:0.5rem; color:var(--color-dark);">No Gemstones Found</h3>
+                    <p style="font-size:0.9rem; margin-bottom:1.5rem;">We couldn't find any products in this category matching your selection.</p>
+                    <button class="btn btn-gold btn-md" onclick="selectCategory('All')">View All Collection</button>
+                </div>
+            `;
+            document.getElementById('load-more-container').style.display = 'none';
+            return;
+        }
+
+        grid.style.display = ''; // Restore grid style
+
+        // Slice products based on load-more count
+        const toShow = filteredProducts.slice(0, visibleProductsCount);
+        
+        let html = '';
+        toShow.forEach(p => {
+            html += renderProductCard(p);
+        });
+        grid.innerHTML = html;
+
+        // Show/Hide Load More
+        const loadMoreContainer = document.getElementById('load-more-container');
+        if (visibleProductsCount < filteredProducts.length) {
+            loadMoreContainer.style.display = 'block';
+        } else {
+            loadMoreContainer.style.display = 'none';
+        }
+
+        // Trigger animations
+        if (typeof refreshAnimations === 'function') {
+            refreshAnimations();
+        }
+    }
+
+    // Pagination
+    function loadMoreProducts() {
+        visibleProductsCount += 8;
+        applyFilterAndSort();
+    }
+</script>
+</body>
+</html>

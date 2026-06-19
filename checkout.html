@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Checkout — VijayKumar Diamonds & Gems</title>
+    <meta name="description" content="Secure Checkout. Place your order for certified natural diamonds and gemstones. Fully insured delivery.">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="icon" href="images/logo.jpeg" type="image/jpeg">
+</head>
+<body>
+
+<!-- Page Loader -->
+<div id="page-loader" class="page-loader">
+    <img src="images/logo.jpeg" alt="VK">
+    <div class="loader-bar"><div class="loader-bar-inner"></div></div>
+</div>
+
+<!-- Dynamic Header -->
+<div id="header-root"></div>
+
+<!-- Checkout Main Content -->
+<main class="container" style="padding-top: var(--space-xl); padding-bottom: var(--space-4xl);">
+
+    <!-- Progress Bar -->
+    <!-- Progress Bar -->
+    <div class="checkout-steps" id="checkout-progress-bar">
+        <div class="checkout-step active" id="step-nav-1">
+            <div class="checkout-step-number">1</div>
+            <span>Shipping</span>
+        </div>
+        <div class="checkout-step-line"></div>
+        <div class="checkout-step" id="step-nav-2">
+            <div class="checkout-step-number">2</div>
+            <span>Payment</span>
+        </div>
+        <div class="checkout-step-line"></div>
+        <div class="checkout-step" id="step-nav-3">
+            <div class="checkout-step-number">3</div>
+            <span>Confirm</span>
+        </div>
+    </div>
+
+    <!-- Main Grid -->
+    <div id="checkout-main-grid">
+        
+        <!-- Left Column (Form steps) -->
+        <div>
+            <!-- Step 1: Authentication / Shipping -->
+            <div id="checkout-step-1" class="checkout-card" style="background:var(--color-white); border:1px solid var(--color-gray-200); border-radius:var(--radius-lg); padding:var(--space-lg); box-shadow:var(--shadow-sm);">
+                
+                <!-- Auth sub-step if not logged in -->
+                <div id="auth-sub-step">
+                    <h3 style="font-family:var(--font-serif); font-size:1.25rem; font-weight:700; margin-bottom:var(--space-sm);">Customer Identification</h3>
+                    <p style="font-size:0.85rem; color:var(--color-gray-500); margin-bottom:var(--space-lg);">Please sign in using your mobile number for secure checkout and tracking.</p>
+                    
+                    <div style="max-width:400px; margin:0 auto; padding:var(--space-md) 0;">
+                        <div style="margin-bottom: var(--space-md);" id="phone-entry-group">
+                            <label class="form-label">Mobile Number</label>
+                            <div style="display:flex; gap:0.5rem;">
+                                <span style="padding:0.6rem 0.75rem; border:1.5px solid var(--color-gray-200); border-radius:var(--radius-sm); font-weight:700; font-size:0.9rem; background:var(--color-gray-50);">+91</span>
+                                <input type="tel" id="auth-phone" class="form-input" placeholder="Enter 10-digit number" style="margin-bottom:0;" maxlength="10">
+                            </div>
+                            <button onclick="sendOTP()" class="btn btn-gold btn-full" style="margin-top:var(--space-md);">Send OTP Verification</button>
+                        </div>
+
+                        <!-- OTP inputs -->
+                        <div style="display: none; margin-bottom: var(--space-md);" id="otp-entry-group">
+                            <label class="form-label">Enter 6-Digit OTP</label>
+                            <p style="font-size:0.75rem; color:var(--color-gray-400); margin-bottom:var(--space-sm);">Demo OTP is <strong style="color:var(--color-dark)">123456</strong></p>
+                            <div class="otp-container" style="margin-bottom:var(--space-lg);">
+                                <input type="text" class="otp-box" maxlength="1" onkeyup="handleOtpInput(this, event, 0)">
+                                <input type="text" class="otp-box" maxlength="1" onkeyup="handleOtpInput(this, event, 1)">
+                                <input type="text" class="otp-box" maxlength="1" onkeyup="handleOtpInput(this, event, 2)">
+                                <input type="text" class="otp-box" maxlength="1" onkeyup="handleOtpInput(this, event, 3)">
+                                <input type="text" class="otp-box" maxlength="1" onkeyup="handleOtpInput(this, event, 4)">
+                                <input type="text" class="otp-box" maxlength="1" onkeyup="handleOtpInput(this, event, 5)">
+                            </div>
+                            <button onclick="verifyOTP()" class="btn btn-gold btn-full">Verify &amp; Continue</button>
+                            <button onclick="resendOTP()" style="background:none; border:none; color:var(--color-gold-dark); cursor:pointer; font-size:0.75rem; font-weight:700; margin-top:var(--space-md); display:block; text-align:center; width:100%;">Resend Code</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Shipping Form (Shown if logged in) -->
+                <div id="shipping-form-step" style="display: none;">
+                    <h3 style="font-family:var(--font-serif); font-size:1.25rem; font-weight:700; margin-bottom:var(--space-lg); border-bottom:1.5px solid var(--color-gray-100); padding-bottom:var(--space-sm);">Delivery Details</h3>
+                    <form id="shipping-form" onsubmit="submitShipping(event)">
+                        <div class="form-grid-2">
+                            <div>
+                                <label class="form-label">First Name *</label>
+                                <input type="text" class="form-input" id="ship-fname" required>
+                            </div>
+                            <div>
+                                <label class="form-label">Last Name *</label>
+                                <input type="text" class="form-input" id="ship-lname" required>
+                            </div>
+                        </div>
+
+                        <div class="form-grid-2">
+                            <div>
+                                <label class="form-label">Email Address *</label>
+                                <input type="email" class="form-input" id="ship-email" required>
+                            </div>
+                            <div>
+                                <label class="form-label">Contact Phone *</label>
+                                <input type="tel" class="form-input" id="ship-phone" readonly>
+                            </div>
+                        </div>
+
+                        <div style="margin-bottom:var(--space-md);">
+                            <label class="form-label">Delivery Street Address *</label>
+                            <textarea class="form-input" id="ship-address" rows="3" placeholder="Apartment, building, street address" required style="font-family:var(--font-sans);"></textarea>
+                        </div>
+
+                        <div class="form-grid-3">
+                            <div>
+                                <label class="form-label">City *</label>
+                                <input type="text" class="form-input" id="ship-city" required>
+                            </div>
+                            <div>
+                                <label class="form-label">State *</label>
+                                <select class="form-select" id="ship-state" required style="padding:0.6rem 0.5rem; font-size:0.85rem;">
+                                    <option value="Maharashtra">Maharashtra</option>
+                                    <option value="Delhi">Delhi</option>
+                                    <option value="Karnataka">Karnataka</option>
+                                    <option value="Tamil Nadu">Tamil Nadu</option>
+                                    <option value="Telangana">Telangana</option>
+                                    <option value="Gujarat">Gujarat</option>
+                                    <option value="West Bengal">West Bengal</option>
+                                    <option value="Rajasthan">Rajasthan</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="form-label">Pincode *</label>
+                                <input type="text" class="form-input" id="ship-pincode" maxlength="6" required>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-gold btn-lg btn-full">Continue to Payment <i class="fas fa-credit-card" style="margin-left:8px;"></i></button>
+                    </form>
+                </div>
+            </div>
+
+            <div id="checkout-step-2" class="checkout-card" style="display: none; background:var(--color-white); border:1px solid var(--color-gray-200); border-radius:var(--radius-lg); padding:var(--space-lg); box-shadow:var(--shadow-sm);">
+                <h3 style="font-family:var(--font-serif); font-size:1.25rem; font-weight:700; margin-bottom:var(--space-md); border-bottom:1.5px solid var(--color-gray-100); padding-bottom:var(--space-sm);">Choose Payment Mode</h3>
+                
+                <div style="display:flex; flex-direction:column; gap:var(--space-md); margin-bottom:var(--space-xl);">
+                    <!-- COD -->
+                    <label id="pay-label-cod" class="payment-option active" onclick="selectPaymentMethod('cod')">
+                        <input type="radio" name="payment-method" id="pay-cod" checked>
+                        <div>
+                            <strong style="display:block; font-size:0.9rem; color:var(--color-dark);">Cash on Delivery (COD)</strong>
+                            <span style="font-size:0.75rem; color:var(--color-gray-500);">Pay in cash or UPI upon delivery. Available across major pin codes.</span>
+                        </div>
+                    </label>
+
+                    <!-- UPI -->
+                    <label id="pay-label-upi" class="payment-option" onclick="selectPaymentMethod('upi')">
+                        <input type="radio" name="payment-method" id="pay-upi">
+                        <div>
+                            <strong style="display:block; font-size:0.9rem; color:var(--color-dark);">Instant UPI (GPay, PhonePe, Paytm)</strong>
+                            <span style="font-size:0.75rem; color:var(--color-gray-500);">Scan QR code or enter your UPI ID for quick approval. Get additional 1% cashback.</span>
+                            <div id="upi-details" style="display: none; margin-top: 0.75rem;">
+                                <input type="text" class="form-input" id="pay-upi-id" placeholder="Enter UPI ID (e.g. name@okhdfcbank)" style="margin-bottom:0; max-width:300px;">
+                            </div>
+                        </div>
+                    </label>
+
+                    <!-- Credit / Debit -->
+                    <label id="pay-label-card" class="payment-option" onclick="selectPaymentMethod('card')">
+                        <input type="radio" name="payment-method" id="pay-card">
+                        <div>
+                            <strong style="display:block; font-size:0.9rem; color:var(--color-dark);">Credit / Debit Card</strong>
+                            <span style="font-size:0.75rem; color:var(--color-gray-500);">Visa, MasterCard, RuPay, and American Express. Fully encrypted.</span>
+                            
+                            <div id="card-details" style="display: none; margin-top: 0.75rem; flex-direction:column; gap:0.5rem; max-width:350px;">
+                                <input type="text" class="form-input" placeholder="Cardholder Name" required>
+                                <input type="text" class="form-input" placeholder="16-Digit Card Number" maxlength="16" required>
+                                <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.5rem;">
+                                    <input type="text" class="form-input" placeholder="MM/YY" maxlength="5" required>
+                                    <input type="password" class="form-input" placeholder="CVV" maxlength="3" required>
+                                </div>
+                            </div>
+                        </div>
+                    </label>
+                </div>
+
+                <div class="checkout-actions">
+                    <button onclick="backToStep(1)" class="btn btn-outline" style="flex:1;">Back to Shipping</button>
+                    <button onclick="completeCheckoutOrder()" class="btn btn-gold" style="flex:2;">Place Insured Order <i class="fas fa-check" style="margin-left:8px;"></i></button>
+                </div>
+            </div>
+
+            <!-- Step 3: Confirmation (Initially hidden) -->
+            <div id="checkout-step-3" class="checkout-card" style="display: none; background:var(--color-white); border:1px solid var(--color-gray-200); border-radius:var(--radius-lg); padding:var(--space-lg); box-shadow:var(--shadow-sm); text-align:center;">
+                <!-- Animated Green Check -->
+                <div style="width: 80px; height: 80px; background: rgba(34, 197, 94, 0.1); color: var(--color-green); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 3rem; margin: 0 auto var(--space-lg) auto; border: 2px solid var(--color-green);">
+                    <i class="fas fa-check"></i>
+                </div>
+                
+                <h2 style="font-family:var(--font-serif); font-size:2rem; font-weight:700; color:var(--color-dark); margin-bottom:var(--space-sm);">Order Placed Successfully!</h2>
+                <p style="font-size:0.95rem; color:var(--color-gray-500); margin-bottom:var(--space-lg);">Thank you for choosing VijayKumar Diamonds &amp; Gems. Your order is registered.</p>
+
+                <div style="background:var(--color-gray-50); border:1px solid var(--color-gray-200); border-radius:var(--radius-md); padding:1rem; display:inline-block; margin-bottom:var(--space-xl); text-align:left; min-width:300px;">
+                    <div style="display:flex; justify-content:space-between; margin-bottom:0.5rem; font-size:0.85rem;"><span style="color:var(--color-gray-500);">Order Number:</span><strong id="confirm-order-id" style="color:var(--color-dark);">#VK123456</strong></div>
+                    <div style="display:flex; justify-content:space-between; margin-bottom:0.5rem; font-size:0.85rem;"><span style="color:var(--color-gray-500);">Delivery Estimate:</span><strong id="confirm-order-date" style="color:var(--color-dark);">3—5 Business Days</strong></div>
+                    <div style="display:flex; justify-content:space-between; font-size:0.85rem;"><span style="color:var(--color-gray-500);">Amount Paid:</span><strong id="confirm-order-total" style="color:var(--color-gold-dark);">₹0</strong></div>
+                </div>
+
+                <div style="display:flex; gap:var(--space-md); justify-content:center; flex-wrap:wrap;">
+                    <a href="account.html" class="btn btn-gold">Track Order <i class="fas fa-location-dot" style="margin-left:8px;"></i></a>
+                    <button onclick="downloadInvoicePDF()" class="btn btn-outline" style="border-color:var(--color-gold); color:var(--color-gold-dark); background:var(--color-ivory);"><i class="fas fa-file-pdf" style="margin-right:6px;"></i> Download Invoice PDF</button>
+                    <a href="shop.html" class="btn btn-outline">Continue Shopping</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Column (Sticky Order Summary) -->
+        <div id="checkout-summary-column">
+            <div class="checkout-summary-card">
+                <h3 style="font-family: var(--font-serif); font-size: 1.15rem; font-weight: 700; color: var(--color-dark); margin-bottom: var(--space-md); border-bottom: 1.5px solid var(--color-gray-100); padding-bottom: var(--space-sm);">Order Summary</h3>
+                
+                <!-- Items list -->
+                <div id="summary-items-list" style="display:flex; flex-direction:column; gap:0.75rem; margin-bottom:var(--space-md); max-height:200px; overflow-y:auto; border-bottom:1.5px solid var(--color-gray-100); padding-bottom:var(--space-md);">
+                    <!-- Dynamic check out items -->
+                </div>
+
+                <div style="display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.8rem; margin-bottom: var(--space-md);">
+                    <div style="display: flex; justify-content: space-between;"><span style="color: var(--color-gray-500);">Subtotal</span><span id="checkout-subtotal" style="font-weight: 700;">₹0</span></div>
+                    <div id="checkout-discount-row" style="display: none; justify-content: space-between; color: var(--color-success);"><span>Discount</span><span id="checkout-discount">-₹0</span></div>
+                    <div style="display: flex; justify-content: space-between;"><span style="color: var(--color-gray-500);">Shipping</span><span id="checkout-shipping">₹0</span></div>
+                    <div style="display: flex; justify-content: space-between;"><span style="color: var(--color-gray-500);">GST (3%)</span><span id="checkout-gst">₹0</span></div>
+                    <div style="display: flex; justify-content: space-between; font-size: 0.95rem; border-top: 1.5px solid var(--color-gray-100); padding-top: var(--space-sm); margin-top: var(--space-xs);"><strong style="color: var(--color-dark);">Total Price</strong><strong id="checkout-total" style="color: var(--color-gold-dark);">₹0</strong></div>
+                </div>
+
+                <!-- Trust Promise alerts inspired by Tanishq and Bluestone -->
+                <div style="border-top:1px dashed var(--color-gray-200); padding-top:1rem; margin-top:1rem; display:flex; flex-direction:column; gap:0.55rem; font-size:0.75rem; color:var(--color-gray-500);">
+                    <div style="display:flex; align-items:center; gap:0.5rem;"><i class="fas fa-shield-halved" style="color:var(--color-success);"></i> <span>100% Certified by GIA, IGI & GRS</span></div>
+                    <div style="display:flex; align-items:center; gap:0.5rem;"><i class="fas fa-gem" style="color:var(--color-gold);"></i> <span>BIS Hallmarked Gold purity guaranteed</span></div>
+                    <div style="display:flex; align-items:center; gap:0.5rem;"><i class="fas fa-truck-fast" style="color:var(--color-gold);"></i> <span>Transit Insured Delivery door-to-door</span></div>
+                    <div style="display:flex; align-items:center; gap:0.5rem;"><i class="fas fa-lock" style="color:var(--color-dark);"></i> <span>Secure 256-bit Encrypted Checkout</span></div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</main>
+
+<!-- Dynamic Footer -->
+<div id="footer-root"></div>
+
+<!-- Scripts -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<script src="js/app.js"></script>
+<script>
+    let currentStep = 1;
+    let shippingAddress = {};
+    let paymentMethod = 'cod';
+
+    document.addEventListener('DOMContentLoaded', () => {
+        // If cart empty, redirect
+        if (cart.length === 0 && currentStep !== 3) {
+            showToast('Your cart is empty. Please add items to proceed.', 'error');
+            setTimeout(() => { window.location.href = 'cart.html'; }, 1500);
+            return;
+        }
+
+        renderSummaryColumn();
+        checkLoginStatus();
+    });
+
+    // Check logged in status
+    function checkLoginStatus() {
+        const authStep = document.getElementById('auth-sub-step');
+        const shipForm = document.getElementById('shipping-form-step');
+
+        if (isLoggedIn()) {
+            authStep.style.display = 'none';
+            shipForm.style.display = 'block';
+            document.getElementById('ship-phone').value = currentUser.phone.replace('+91 ', '');
+            
+            // Populate defaults if any
+            if (currentUser.name) {
+                const parts = currentUser.name.split(' ');
+                document.getElementById('ship-fname').value = parts[0] || '';
+                document.getElementById('ship-lname').value = parts.slice(1).join(' ') || '';
+            }
+            if (currentUser.email) {
+                document.getElementById('ship-email').value = currentUser.email;
+            }
+        } else {
+            authStep.style.display = 'block';
+            shipForm.style.display = 'none';
+        }
+    }
+
+    // OTP Sending Logic
+    window.sendOTP = function() {
+        const phoneInput = document.getElementById('auth-phone');
+        if (!phoneInput || phoneInput.value.length !== 10) {
+            showToast('Please enter a valid 10-digit mobile number.', 'error');
+            return;
+        }
+
+        tempPhone = phoneInput.value;
+        document.getElementById('phone-entry-group').style.display = 'none';
+        document.getElementById('otp-entry-group').style.display = 'block';
+        showToast('Verification OTP code sent successfully!', 'success');
+    };
+
+    window.resendOTP = function() {
+        showToast('New verification code sent!', 'success');
+    };
+
+    // OTP digit shifting helper
+    let otpValues = ['', '', '', '', '', ''];
+    window.handleOtpInput = function(el, e, idx) {
+        otpValues[idx] = el.value;
+        if (el.value.length === 1 && idx < 5) {
+            el.nextElementSibling.focus();
+        } else if (e.key === 'Backspace' && idx > 0) {
+            el.previousElementSibling.focus();
+        }
+    };
+
+    window.verifyOTP = function() {
+        const code = otpValues.join('');
+        if (code === '123456') {
+            login(tempPhone);
+            checkLoginStatus();
+        } else {
+            showToast('Invalid verification code. Use 123456.', 'error');
+        }
+    };
+
+    // Submit Shipping address
+    window.submitShipping = function(e) {
+        e.preventDefault();
+
+        shippingAddress = {
+            fname: document.getElementById('ship-fname').value,
+            lname: document.getElementById('ship-lname').value,
+            email: document.getElementById('ship-email').value,
+            address: document.getElementById('ship-address').value,
+            city: document.getElementById('ship-city').value,
+            state: document.getElementById('ship-state').value,
+            pincode: document.getElementById('ship-pincode').value
+        };
+
+        // Update profile
+        if (isLoggedIn()) {
+            currentUser.name = shippingAddress.fname + ' ' + shippingAddress.lname;
+            currentUser.email = shippingAddress.email;
+            saveState();
+        }
+
+        // Switch to Step 2
+        currentStep = 2;
+        document.getElementById('checkout-step-1').style.display = 'none';
+        document.getElementById('checkout-step-2').style.display = 'block';
+
+        // Update progress bar
+        document.getElementById('step-nav-1').className = 'checkout-step completed';
+        document.getElementById('step-nav-2').className = 'checkout-step active';
+    };
+
+    // Back button
+    window.backToStep = function(step) {
+        currentStep = 1;
+        document.getElementById('checkout-step-1').style.display = 'block';
+        document.getElementById('checkout-step-2').style.display = 'none';
+        
+        document.getElementById('step-nav-1').className = 'checkout-step active';
+        document.getElementById('step-nav-2').className = 'checkout-step';
+    };
+
+    // Payment Selection
+    window.selectPaymentMethod = function(method) {
+        paymentMethod = method;
+        document.getElementById('pay-cod').checked = method === 'cod';
+        document.getElementById('pay-upi').checked = method === 'upi';
+        document.getElementById('pay-card').checked = method === 'card';
+
+        // Toggle active class on labels for premium visual feedback
+        const labelCod = document.getElementById('pay-label-cod');
+        const labelUpi = document.getElementById('pay-label-upi');
+        const labelCard = document.getElementById('pay-label-card');
+        
+        if (labelCod) labelCod.classList.toggle('active', method === 'cod');
+        if (labelUpi) labelUpi.classList.toggle('active', method === 'upi');
+        if (labelCard) labelCard.classList.toggle('active', method === 'card');
+
+        document.getElementById('upi-details').style.display = method === 'upi' ? 'block' : 'none';
+        document.getElementById('card-details').style.display = method === 'card' ? 'flex' : 'none';
+    };
+
+    // Complete Checkout
+    window.completeCheckoutOrder = function() {
+        if (paymentMethod === 'upi') {
+            const upiId = document.getElementById('pay-upi-id').value;
+            if (!upiId || !upiId.includes('@')) {
+                showToast('Please enter a valid UPI ID.', 'error');
+                return;
+            }
+        }
+
+        // Place Order using JS app.js logic
+        const placed = placeOrder(shippingAddress);
+        window.lastPlacedOrder = placed; // save reference for PDF download
+        
+        // Switch to Step 3
+        currentStep = 3;
+        document.getElementById('checkout-step-2').style.display = 'none';
+        document.getElementById('checkout-step-3').style.display = 'block';
+        document.getElementById('checkout-summary-column').style.display = 'none';
+        document.getElementById('checkout-main-grid').style.gridTemplateColumns = '1fr';
+
+        // Progress bar finalise
+        document.getElementById('step-nav-2').className = 'checkout-step completed';
+        document.getElementById('step-nav-3').className = 'checkout-step completed';
+
+        // Fill Confirmation Details
+        document.getElementById('confirm-order-id').textContent = '#' + placed.id;
+        document.getElementById('confirm-order-total').textContent = formatPrice(placed.total);
+    };
+
+    // Summary Column calculations
+    function renderSummaryColumn() {
+        const list = document.getElementById('summary-items-list');
+        if (!list) return;
+
+        list.innerHTML = cart.map(item => {
+            const p = getProduct(item.id);
+            if (!p) return '';
+            const price = item.options && item.options.price ? item.options.price : p.price;
+            const optionsSummary = getOptionSummary(item.options);
+            return `
+                <div style="display:flex; gap:0.5rem; align-items:center; margin-bottom:0.75rem;">
+                    <img src="${p.image}" style="width:40px; height:50px; object-fit:cover; border-radius:var(--radius-sm);">
+                    <div style="flex:1; font-size:0.75rem;">
+                        <div style="font-family:var(--font-serif); font-weight:600; color:var(--color-dark); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:140px;">${p.name}</div>
+                        ${optionsSummary ? `<div style="font-size:0.6rem; color:var(--color-gold-dark); margin-top:2px; line-height:1.2;">${optionsSummary}</div>` : ''}
+                        <div style="color:var(--color-gray-500); margin-top:2px;">Qty: ${item.qty}</div>
+                    </div>
+                    <div style="font-size:0.75rem; font-weight:700; color:var(--color-gold-dark);">${formatPrice(price * item.qty)}</div>
+                </div>
+            `;
+        }).join('');
+
+        const subtotal = getCartSubtotal();
+        const discountAmt = subtotal * appliedPromo;
+        const shipping = (subtotal >= 50000) ? 0 : 500;
+        const gst = Math.round(subtotal * 0.03);
+        const total = (subtotal - discountAmt) + shipping + gst;
+
+        document.getElementById('checkout-subtotal').textContent = formatPrice(subtotal);
+        document.getElementById('checkout-shipping').textContent = shipping === 0 ? 'Free' : formatPrice(shipping);
+        document.getElementById('checkout-gst').textContent = formatPrice(gst);
+        document.getElementById('checkout-total').textContent = formatPrice(total);
+
+        const discountRow = document.getElementById('checkout-discount-row');
+        if (appliedPromo > 0) {
+            discountRow.style.display = 'flex';
+            document.getElementById('checkout-discount').textContent = `-` + formatPrice(discountAmt);
+        } else {
+            discountRow.style.display = 'none';
+        }
+    }
+
+    // --- PDF INVOICE GENERATOR & NUMBER-TO-WORDS ---
+    window.lastPlacedOrder = null;
+
+    window.downloadInvoicePDF = function() {
+        const order = window.lastPlacedOrder;
+        if (!order) {
+            showToast('No order data found to download invoice.', 'error');
+            return;
+        }
+
+        // Populate Invoice fields
+        document.getElementById('inv-id').textContent = 'INV-2026-' + order.id;
+        document.getElementById('inv-date').textContent = order.date;
+        
+        const state = order.address.state || 'Tamil Nadu';
+        document.getElementById('inv-supply-place').textContent = state;
+
+        // Bill to
+        document.getElementById('inv-bill-name').textContent = order.address.fname + ' ' + order.address.lname;
+        document.getElementById('inv-bill-phone').textContent = '+91 ' + order.address.phone;
+        document.getElementById('inv-bill-email').textContent = order.address.email;
+
+        // Ship to
+        document.getElementById('inv-ship-address').textContent = order.address.address;
+        document.getElementById('inv-ship-city').textContent = order.address.city;
+        document.getElementById('inv-ship-state').textContent = order.address.state;
+        document.getElementById('inv-ship-pincode').textContent = order.address.pincode;
+
+        // Items table
+        const tbody = document.getElementById('inv-items-body');
+        tbody.innerHTML = '';
+        
+        order.items.forEach((item, index) => {
+            const p = item.product;
+            const price = item.options && item.options.price ? item.options.price : p.price;
+            
+            // HSN code: Loose gemstones HSN 7103, Jewelry 7113
+            let hsn = '7113';
+            const gemCats = ['Yellow Sapphire', 'Blue Sapphire', 'Emerald', 'Ruby', 'Opal', 'Pearl', 'Red Coral', 'Hessonite'];
+            if (gemCats.includes(p.category)) {
+                hsn = '7103';
+            }
+            
+            let specs = '';
+            if (p.carat) specs += p.carat + ' Ct';
+            if (item.options && item.options.metal) {
+                specs += (specs ? ' | ' : '') + item.options.metal;
+            }
+            if (!specs) specs = 'Natural Stone';
+
+            const tr = document.createElement('tr');
+            tr.style.borderBottom = '1px solid #f2edd9';
+            tr.innerHTML = `
+                <td style="padding: 10px; border: 1px solid #f2edd9; text-align: center;">${index + 1}</td>
+                <td style="padding: 10px; border: 1px solid #f2edd9;">
+                    <strong style="color: #1a1a1a;">${p.name}</strong>
+                    ${item.options && item.options.wearType && item.options.wearType !== 'Loose' ? `<div style="font-size:0.7rem; color:#777777; margin-top:2px;">Mounted as: ${item.options.wearType} (${item.options.metal})</div>` : ''}
+                </td>
+                <td style="padding: 10px; border: 1px solid #f2edd9; text-align: center;">${hsn}</td>
+                <td style="padding: 10px; border: 1px solid #f2edd9; text-align: center;">${specs}</td>
+                <td style="padding: 10px; border: 1px solid #f2edd9; text-align: center;">${item.qty}</td>
+                <td style="padding: 10px; border: 1px solid #f2edd9; text-align: right;">₹${price.toLocaleString('en-IN')}</td>
+                <td style="padding: 10px; border: 1px solid #f2edd9; text-align: right;">₹${(price * item.qty).toLocaleString('en-IN')}</td>
+            `;
+            tbody.appendChild(tr);
+        });
+
+        // Finance Summary
+        const subtotal = order.subtotal || 0;
+        const discount = order.discount || 0;
+        const taxable = subtotal - discount;
+        const shipping = order.shipping !== undefined ? order.shipping : (subtotal >= 50000 ? 0 : 500);
+        const gst = order.gst !== undefined ? order.gst : Math.round(taxable * 0.03);
+        const total = order.total !== undefined ? order.total : (taxable + shipping + gst);
+
+        document.getElementById('inv-subtotal').textContent = '₹' + subtotal.toLocaleString('en-IN');
+        
+        const discRow = document.getElementById('inv-discount-row');
+        if (discount > 0) {
+            discRow.style.display = 'flex';
+            document.getElementById('inv-discount').textContent = '-₹' + discount.toLocaleString('en-IN');
+        } else {
+            discRow.style.display = 'none';
+        }
+        document.getElementById('inv-taxable').textContent = '₹' + taxable.toLocaleString('en-IN');
+
+        // GST splits
+        const gstSplitDiv = document.getElementById('inv-gst-split-section');
+        gstSplitDiv.innerHTML = '';
+        
+        const isTN = (state.toLowerCase().trim() === 'tamil nadu');
+        if (isTN) {
+            const cgst = Math.round(taxable * 0.015);
+            const sgst = Math.round(taxable * 0.015);
+            gstSplitDiv.innerHTML = `
+                <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+                    <span style="color: #555555;">CGST (1.5%):</span>
+                    <span style="font-weight: 600;">₹${cgst.toLocaleString('en-IN')}</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+                    <span style="color: #555555;">SGST (1.5%):</span>
+                    <span style="font-weight: 600;">₹${sgst.toLocaleString('en-IN')}</span>
+                </div>
+            `;
+        } else {
+            const igst = Math.round(taxable * 0.03);
+            gstSplitDiv.innerHTML = `
+                <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+                    <span style="color: #555555;">IGST (3.0%):</span>
+                    <span style="font-weight: 600;">₹${igst.toLocaleString('en-IN')}</span>
+                </div>
+            `;
+        }
+
+        document.getElementById('inv-shipping').textContent = shipping === 0 ? 'Free' : '₹' + shipping.toLocaleString('en-IN');
+        document.getElementById('inv-total').textContent = '₹' + total.toLocaleString('en-IN');
+
+        // Amount in words
+        document.getElementById('inv-amount-words').textContent = numberToWords(total);
+
+        // Options for html2pdf
+        const element = document.getElementById('invoice-template');
+        const opt = {
+            margin:       0.3,
+            filename:     'VK-Invoice-' + order.id + '.pdf',
+            image:        { type: 'jpeg', quality: 0.98 },
+            html2canvas:  { scale: 2.5, useCORS: true },
+            jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+        };
+
+        showToast('Generating high-quality invoice PDF...', 'info');
+        html2pdf().set(opt).from(element).save()
+            .then(() => {
+                showToast('Invoice PDF downloaded successfully!', 'success');
+            })
+            .catch(err => {
+                console.error(err);
+                showToast('Error generating PDF.', 'error');
+            });
+    };
+
+    function numberToWords(amount) {
+        const words = {
+            0: 'Zero', 1: 'One', 2: 'Two', 3: 'Three', 4: 'Four', 5: 'Five', 6: 'Six', 7: 'Seven', 8: 'Eight', 9: 'Nine',
+            10: 'Ten', 11: 'Eleven', 12: 'Twelve', 13: 'Thirteen', 14: 'Fourteen', 15: 'Fifteen', 16: 'Sixteen', 17: 'Seventeen', 18: 'Eighteen', 19: 'Nineteen',
+            20: 'Twenty', 30: 'Thirty', 40: 'Forty', 50: 'Fifty', 60: 'Sixty', 70: 'Seventy', 80: 'Eighty', 90: 'Ninety'
+        };
+        
+        function convertLessThanThousand(num) {
+            let temp = '';
+            if (num >= 100) {
+                temp += words[Math.floor(num / 100)] + ' Hundred ';
+                num %= 100;
+            }
+            if (num > 0) {
+                if (num < 20) {
+                    temp += words[num];
+                } else {
+                    temp += words[Math.floor(num / 10) * 10];
+                    if (num % 10 > 0) {
+                        temp += '-' + words[num % 10];
+                    }
+                }
+            }
+            return temp.trim();
+        }
+
+        let num = Math.round(amount);
+        if (num === 0) return 'Zero';
+        
+        let str = '';
+        
+        // Crores
+        if (num >= 10000000) {
+            str += convertLessThanThousand(Math.floor(num / 10000000)) + ' Crore ';
+            num %= 10000000;
+        }
+        // Lakhs
+        if (num >= 100000) {
+            str += convertLessThanThousand(Math.floor(num / 100000)) + ' Lakh ';
+            num %= 100000;
+        }
+        // Thousands
+        if (num >= 1000) {
+            str += convertLessThanThousand(Math.floor(num / 1000)) + ' Thousand ';
+            num %= 1000;
+        }
+        // Hundreds & Units
+        if (num > 0) {
+            str += convertLessThanThousand(num);
+        }
+        
+        return str.trim() + ' Rupees Only';
+    }
+</script>
+
+<!-- Off-screen Invoice Container for PDF generation -->
+<div style="position: absolute; left: -9999px; top: -9999px;">
+    <div id="invoice-template" style="width: 790px; padding: 40px; background: #ffffff; font-family: 'Outfit', 'Inter', sans-serif; color: #1a1a1a; line-height: 1.5; box-sizing: border-box;">
+        <!-- Header -->
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 2px solid #b89c56; padding-bottom: 20px; margin-bottom: 20px;">
+            <div style="display: flex; gap: 15px; align-items: center;">
+                <img src="data:image/png;base64,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" style="width: 55px; height: 55px; border-radius: 50%; border: 1.5px solid #b89c56; object-fit: cover;" alt="VK Logo">
+                <div>
+                    <h1 style="font-family: 'Playfair Display', serif; font-size: 1.6rem; font-weight: 700; color: #1a1a1a; margin: 0 0 5px 0; letter-spacing: 0.05em; text-transform: uppercase;">VijayKumar Diamonds <span style="font-family: 'Outfit', 'Inter', sans-serif; font-weight: 400;">&amp;</span> Gems</h1>
+                    <p style="font-size: 0.8rem; color: #555555; margin: 0 0 3px 0;">Venkatakrishna Street, Opposite Shanmuga Nursing Home, RS Puram</p>
+                    <p style="font-size: 0.8rem; color: #555555; margin: 0 0 3px 0;">Coimbatore - 641002, Tamil Nadu, India</p>
+                    <p style="font-size: 0.8rem; color: #555555; margin: 0 0 3px 0;">Phone: +91 90927 16427 | Email: info@vijaykumardiamonds.com</p>
+                    <p style="font-size: 0.8rem; color: #1a1a1a; font-weight: 700; margin: 5px 0 0 0;">GSTIN: 33AAAAA1111A1Z1 (Demo)</p>
+                </div>
+            </div>
+            <div style="text-align: right;">
+                <h2 style="font-family: 'Playfair Display', serif; font-size: 1.6rem; font-weight: 700; color: #b89c56; margin: 0 0 10px 0; letter-spacing: 0.1em; text-transform: uppercase;">Tax Invoice</h2>
+                <div style="font-size: 0.8rem; color: #555555;">
+                    <p style="margin: 0 0 3px 0;"><strong>Invoice No:</strong> <span id="inv-id">-</span></p>
+                    <p style="margin: 0 0 3px 0;"><strong>Date:</strong> <span id="inv-date">-</span></p>
+                    <p style="margin: 0 0 3px 0;"><strong>Place of Supply:</strong> <span id="inv-supply-place">-</span></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Billing details -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 25px;">
+            <div style="background: #fcfbf7; border: 1px solid #f2edd9; border-radius: 6px; padding: 15px;">
+                <h3 style="font-family: 'Playfair Display', serif; font-size: 0.9rem; font-weight: 700; color: #b89c56; margin: 0 0 8px 0; text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 1px solid #f2edd9; padding-bottom: 4px;">Billed To</h3>
+                <p style="font-size: 0.85rem; font-weight: 700; color: #1a1a1a; margin: 0 0 4px 0;"><span id="inv-bill-name">-</span></p>
+                <p style="font-size: 0.8rem; color: #555555; margin: 0 0 3px 0;">Phone: <span id="inv-bill-phone">-</span></p>
+                <p style="font-size: 0.8rem; color: #555555; margin: 0 0 3px 0;">Email: <span id="inv-bill-email">-</span></p>
+            </div>
+            <div style="background: #fcfbf7; border: 1px solid #f2edd9; border-radius: 6px; padding: 15px;">
+                <h3 style="font-family: 'Playfair Display', serif; font-size: 0.9rem; font-weight: 700; color: #b89c56; margin: 0 0 8px 0; text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 1px solid #f2edd9; padding-bottom: 4px;">Shipped To</h3>
+                <p style="font-size: 0.8rem; color: #555555; margin: 0 0 3px 0;" id="inv-ship-address">-</p>
+                <p style="font-size: 0.8rem; color: #555555; margin: 0 0 3px 0;"><span id="inv-ship-city">-</span>, <span id="inv-ship-state">-</span> - <span id="inv-ship-pincode">-</span></p>
+            </div>
+        </div>
+
+        <!-- Items Table -->
+        <table style="width: 100%; border-collapse: collapse; margin-bottom: 25px; font-size: 0.8rem;">
+            <thead>
+                <tr style="background: #b89c56; color: #ffffff; text-align: left;">
+                    <th style="padding: 10px; border: 1px solid #b89c56; font-weight: 700; width: 40px; text-align: center;">#</th>
+                    <th style="padding: 10px; border: 1px solid #b89c56; font-weight: 700;">Description of Goods</th>
+                    <th style="padding: 10px; border: 1px solid #b89c56; font-weight: 700; width: 80px; text-align: center;">HSN Code</th>
+                    <th style="padding: 10px; border: 1px solid #b89c56; font-weight: 700; width: 80px; text-align: center;">Weight/Specs</th>
+                    <th style="padding: 10px; border: 1px solid #b89c56; font-weight: 700; width: 50px; text-align: center;">Qty</th>
+                    <th style="padding: 10px; border: 1px solid #b89c56; font-weight: 700; width: 100px; text-align: right;">Rate (INR)</th>
+                    <th style="padding: 10px; border: 1px solid #b89c56; font-weight: 700; width: 100px; text-align: right;">Amount (INR)</th>
+                </tr>
+            </thead>
+            <tbody id="inv-items-body">
+                <!-- Dynamically populated -->
+            </tbody>
+        </table>
+
+        <!-- Summary & Tax Breakdowns -->
+        <div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 20px; align-items: flex-start; margin-bottom: 30px;">
+            <div style="font-size: 0.75rem; color: #555555; line-height: 1.6;">
+                <p style="margin: 0 0 5px 0;"><strong>Amount in Words:</strong></p>
+                <p style="font-size: 0.8rem; font-weight: 700; color: #1a1a1a; margin: 0 0 15px 0; font-style: italic;" id="inv-amount-words">-</p>
+                
+                <div style="border-top: 1px dashed #cccccc; padding-top: 10px;">
+                    <p style="margin: 0 0 4px 0;"><strong>Declarations <span style="font-family: 'Outfit', 'Inter', sans-serif; font-weight: 400;">&amp;</span> Terms:</strong></p>
+                    <p style="margin: 0; font-size: 0.7rem; color: #777777;">1. We declare that this invoice shows the actual price of the goods described and that all particulars are true and correct.</p>
+                    <p style="margin: 3px 0 0 0; font-size: 0.7rem; color: #777777;">2. All gemstones <span style="font-family: 'Outfit', 'Inter', sans-serif; font-weight: 400;">&amp;</span> diamonds are certified natural by GIA, IGI, or GRS. Gold mounts feature official BIS Hallmarking.</p>
+                    <p style="margin: 3px 0 0 0; font-size: 0.7rem; color: #777777;">3. Returns or exchanges must be initiated within 10 days of delivery with certificate labels intact.</p>
+                </div>
+            </div>
+            
+            <div style="background: #fcfbf7; border: 1px solid #f2edd9; border-radius: 6px; padding: 15px; font-size: 0.8rem;">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+                    <span style="color: #555555;">Subtotal:</span>
+                    <span style="font-weight: 600;" id="inv-subtotal">₹0</span>
+                </div>
+                <div style="display: none; justify-content: space-between; margin-bottom: 6px; color: #16a34a;" id="inv-discount-row">
+                    <span>Discount:</span>
+                    <span style="font-weight: 600;" id="inv-discount">-₹0</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 6px; border-bottom: 1px solid #f2edd9; padding-bottom: 6px;">
+                    <span style="color: #555555;">Taxable Value:</span>
+                    <span style="font-weight: 600;" id="inv-taxable">₹0</span>
+                </div>
+                
+                <!-- GST splits -->
+                <div id="inv-gst-split-section" style="border-bottom: 1px solid #f2edd9; padding-bottom: 6px; margin-bottom: 6px;">
+                    <!-- Dynamic SGST/CGST/IGST rows -->
+                </div>
+                
+                <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                    <span style="color: #555555;">Insured Shipping:</span>
+                    <span style="font-weight: 600;" id="inv-shipping">₹0</span>
+                </div>
+                
+                <div style="display: flex; justify-content: space-between; font-size: 0.95rem; border-top: 1.5px solid #b89c56; padding-top: 8px; margin-top: 4px;">
+                    <strong style="color: #1a1a1a;">Total Price (Incl. GST):</strong>
+                    <strong style="color: #b89c56;" id="inv-total">₹0</strong>
+                </div>
+            </div>
+        </div>
+
+        <!-- Signature Footer -->
+        <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-top: 40px; padding-top: 20px; border-top: 1px solid #f2edd9;">
+            <div style="font-size: 0.7rem; color: #777777;">
+                <p style="margin: 0 0 3px 0;">This is a computer-generated tax invoice and requires no physical seal.</p>
+                <p style="margin: 0;">Thank you for shopping at VijayKumar Diamonds <span style="font-family: 'Outfit', 'Inter', sans-serif; font-weight: 400;">&amp;</span> Gems.</p>
+            </div>
+            <div style="text-align: right; width: 220px;">
+                <p style="font-size: 0.75rem; color: #555555; margin: 0 0 10px 0;">For <strong>VijayKumar Diamonds <span style="font-family: 'Outfit', 'Inter', sans-serif; font-weight: 400;">&amp;</span> Gems</strong></p>
+                <div style="font-family: 'Brush Script MT', cursive; font-size: 1.6rem; color: #b89c56; line-height: 1; margin-bottom: 4px; padding-right: 20px;">Vijay Kumar</div>
+                <p style="font-size: 0.75rem; font-weight: 700; color: #1a1a1a; border-top: 1px solid #cccccc; display: inline-block; width: 100%; padding-top: 4px; margin: 0;">Authorized Signatory</p>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

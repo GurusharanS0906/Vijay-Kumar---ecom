@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VijayKumar Diamonds & Gems — Certified Gemstones & Fine Jewelry</title>
+    <meta name="description" content="Shop certified natural diamonds, gemstones, and fine jewelry. GIA, GRS & IGI certified. Free shipping across India.">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="icon" href="images/logo.jpeg" type="image/jpeg">
+</head>
+<body>
+
+<!-- ═══════════════ PAGE LOADER ═══════════════ -->
+<div id="page-loader" class="page-loader">
+    <img src="images/logo.jpeg" alt="VK" onerror="this.alt='VK';">
+    <div class="loader-bar"><div class="loader-bar-inner"></div></div>
+</div>
+
+<!-- ═══════════════ HEADER ═══════════════ -->
+<div id="header-root"></div>
+
+<!-- ═══════════════ HERO SECTION (CAROUSEL) ═══════════════ -->
+<section class="hero-section hero-home-section" style="padding: 0; border-bottom: none;">
+    <!-- Running Ad Ticker -->
+    <div class="ticker-wrap">
+        <div class="ticker">
+            ⚡ GRAND LAUNCH OFFER: 20% DISCOUNT ON ALL STONES &amp; RINGS — CODE: VK20 &nbsp;&nbsp;&bull;&nbsp;&nbsp; 
+            🌟 FREE ASTROLOGICAL CONSULTATION BY VEDIC GEMOLOGISTS &nbsp;&nbsp;&bull;&nbsp;&nbsp; 
+            💎 100% NATURAL CERTIFIED GEMSTONES (GIA, GRS, IGI LAB CERTIFIED) &nbsp;&nbsp;&bull;&nbsp;&nbsp; 
+            🚚 FREE INSURED SHIPPING NATIONWIDE ABOVE ₹50,000 &nbsp;&nbsp;&bull;&nbsp;&nbsp;
+            ⚡ GRAND LAUNCH OFFER: 20% DISCOUNT ON ALL STONES &amp; RINGS — CODE: VK20 &nbsp;&nbsp;&bull;&nbsp;&nbsp; 
+            🌟 FREE ASTROLOGICAL CONSULTATION BY VEDIC GEMOLOGISTS &nbsp;&nbsp;&bull;&nbsp;&nbsp; 
+            💎 100% NATURAL CERTIFIED GEMSTONES (GIA, GRS, IGI LAB CERTIFIED) &nbsp;&nbsp;&bull;&nbsp;&nbsp; 
+            🚚 FREE INSURED SHIPPING NATIONWIDE ABOVE ₹50,000
+        </div>
+    </div>
+
+    <!-- Single Banner Image in the Background -->
+    <div class="hero-bg hero-home-bg" style="background-image: url('images/nine_gemstones_banner.png');"></div>
+    <div class="hero-overlay-bottom-blend"></div>
+
+    <!-- Glassmorphic Carousel of Ads (Placed at the bottom) -->
+    <div class="hero-slider-wrapper">
+        <div class="hero-glass-card">
+            <div class="hero-slider-container" id="hero-slides-container">
+                
+                <!-- Slide 1: Main Brand Banner -->
+                <div class="hero-slide">
+                    <div class="hero-slide-text">
+                        <span class="hero-tagline">The New Standard</span>
+                        <h2 class="hero-title">Real Gems. <em>Real Value.</em></h2>
+                        <p class="hero-subtitle">Discover GIA, GRS &amp; IGI certified natural diamonds and precious gemstones — handpicked for brilliance, delivered with trust.</p>
+                    </div>
+                    <a href="shop.html" class="btn btn-gold btn-sm" style="flex-shrink:0;">Explore Collection <i class="fas fa-arrow-right" style="margin-left:8px;"></i></a>
+                </div>
+
+                <!-- Slide 2: Astrology Promotion -->
+                <div class="hero-slide">
+                    <div class="hero-slide-text">
+                        <span class="hero-tagline">Exclusive Concierge</span>
+                        <h2 class="hero-title">Free Astrological <em>Consultation</em></h2>
+                        <p class="hero-subtitle">Struggling to find the perfect stone? Let our certified gemologists and Vedic astrologers guide you based on your birth charts.</p>
+                    </div>
+                    <a href="contact.html?subject=Astrological Consultation" class="btn btn-gold btn-sm" style="flex-shrink:0;">Book Free Consult <i class="fas fa-chevron-right" style="margin-left:8px;"></i></a>
+                </div>
+
+                <!-- Slide 3: Bespoke Jewelry -->
+                <div class="hero-slide">
+                    <div class="hero-slide-text">
+                        <span class="hero-tagline">Handcrafted Gold</span>
+                        <h2 class="hero-title">Bespoke Ring <em>Customization</em></h2>
+                        <p class="hero-subtitle">Mount your selected natural gemstone in 18K/22K hallmarked gold rings. Crafted to absolute perfection.</p>
+                    </div>
+                    <a href="contact.html?subject=Bespoke Customization" class="btn btn-gold btn-sm" style="flex-shrink:0;">Start Designing <i class="fas fa-chevron-right" style="margin-left:8px;"></i></a>
+                </div>
+
+                <!-- Slide 4: 20% Grand Launch -->
+                <div class="hero-slide">
+                    <div class="hero-slide-text">
+                        <span class="hero-tagline">Natural Splendor</span>
+                        <h2 class="hero-title">20% Grand Launch <em>Special Offer</em></h2>
+                        <p class="hero-subtitle">Celebrate the opening of our flagship online store with an instant 20% discount on loose gemstones and rings. Code: <strong>VK20</strong></p>
+                    </div>
+                    <a href="shop.html" class="btn btn-gold btn-sm" style="flex-shrink:0;">Shop Collection <i class="fas fa-arrow-right" style="margin-left:8px;"></i></a>
+                </div>
+
+            </div>
+
+            <!-- Navigation Arrows -->
+            <button class="hero-arrow prev" onclick="moveHeroSlide(-1)" aria-label="Previous slide">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+            <button class="hero-arrow next" onclick="moveHeroSlide(1)" aria-label="Next slide">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+
+            <!-- Indicator Dots -->
+            <div class="hero-dots-container" id="hero-dots-container">
+                <span onclick="goToHeroSlide(0)" class="hero-dot active"></span>
+                <span onclick="goToHeroSlide(1)" class="hero-dot"></span>
+                <span onclick="goToHeroSlide(2)" class="hero-dot"></span>
+                <span onclick="goToHeroSlide(3)" class="hero-dot"></span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════════ GEM CIRCLES — SHOP BY GEMSTONE ═══════════════ -->
+<section class="section reveal" id="gem-circles-section">
+    <div class="container">
+        <div class="section-header">
+            <span class="section-label">Our Collection</span>
+            <h2 class="section-title">Shop by Gemstone</h2>
+            <p class="section-subtitle">Nine sacred gems — each chosen for its purity, provenance, and planetary power.</p>
+            <div class="gold-line"></div>
+        </div>
+        <div class="gem-circles hide-scrollbar" id="gem-circles">
+            <a href="shop.html?cat=Yellow Sapphire" class="gem-circle">
+                <div class="gem-circle-img"><img src="images/yellow_sapphire.png" alt="Yellow Sapphire"></div>
+                <span class="gem-circle-label">Yellow Sapphire</span>
+            </a>
+            <a href="shop.html?cat=Blue Sapphire" class="gem-circle">
+                <div class="gem-circle-img"><img src="images/blue_sapphire.png" alt="Blue Sapphire"></div>
+                <span class="gem-circle-label">Blue Sapphire</span>
+            </a>
+            <a href="shop.html?cat=Emerald" class="gem-circle">
+                <div class="gem-circle-img"><img src="images/emerald.png" alt="Emerald"></div>
+                <span class="gem-circle-label">Emerald</span>
+            </a>
+            <a href="shop.html?cat=Ruby" class="gem-circle">
+                <div class="gem-circle-img"><img src="images/ruby.png" alt="Ruby"></div>
+                <span class="gem-circle-label">Ruby</span>
+            </a>
+            <a href="shop.html?cat=Opal" class="gem-circle">
+                <div class="gem-circle-img"><img src="images/opal.png" alt="Opal"></div>
+                <span class="gem-circle-label">Opal</span>
+            </a>
+            <a href="shop.html?cat=Pearl" class="gem-circle">
+                <div class="gem-circle-img"><img src="images/pearl.png" alt="Pearl"></div>
+                <span class="gem-circle-label">Pearl</span>
+            </a>
+            <a href="shop.html?cat=Red Coral" class="gem-circle">
+                <div class="gem-circle-img"><img src="images/coral.png" alt="Red Coral"></div>
+                <span class="gem-circle-label">Red Coral</span>
+            </a>
+            <a href="shop.html?cat=Hessonite" class="gem-circle">
+                <div class="gem-circle-img"><img src="images/hessonite.png" alt="Hessonite"></div>
+                <span class="gem-circle-label">Hessonite</span>
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════════ CATEGORY CARDS ═══════════════ -->
+<section class="section bg-ivory reveal" id="category-cards-section">
+    <div class="container">
+        <div class="section-header">
+            <span class="section-label">Curated For You</span>
+            <h2 class="section-title">Explore Categories</h2>
+            <p class="section-subtitle">From loose certified gemstones to timeless fine jewelry — find exactly what you're looking for.</p>
+            <div class="gold-line"></div>
+        </div>
+        <div class="category-scroll hide-scrollbar">
+            <a href="shop.html?type=gems" class="category-card">
+                <img src="images/ruby.png" alt="Loose Gemstones" loading="lazy">
+                <div class="category-card-overlay"></div>
+                <div class="category-card-content">
+                    <h3>Loose Gemstones</h3>
+                    <p>Certified natural gems for astrology &amp; collection</p>
+                </div>
+            </a>
+            <a href="shop.html?type=jewelry" class="category-card">
+                <img src="images/ring.png" alt="Fine Jewelry" loading="lazy">
+                <div class="category-card-overlay"></div>
+                <div class="category-card-content">
+                    <h3>Fine Jewelry</h3>
+                    <p>Handcrafted rings, pendants &amp; necklaces in hallmarked gold</p>
+                </div>
+            </a>
+            <a href="shop.html?cat=Pearl" class="category-card">
+                <img src="images/pearl.png" alt="Precious Pearls" loading="lazy">
+                <div class="category-card-overlay"></div>
+                <div class="category-card-content">
+                    <h3>Precious Pearls</h3>
+                    <p>South Sea, Basra &amp; freshwater pearls of exceptional luster</p>
+                </div>
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════════ FEATURED PRODUCTS — BESTSELLERS ═══════════════ -->
+<section class="section reveal" id="bestsellers-section">
+    <div class="container">
+        <div class="section-header">
+            <span class="section-label">Most Loved</span>
+            <h2 class="section-title">Bestsellers</h2>
+            <p class="section-subtitle">Our customers' favourites — certified, stunning, and ready to ship.</p>
+            <div class="gold-line"></div>
+        </div>
+        <div class="slider-wrapper">
+            <div class="product-grid hide-scrollbar featured-scroll" id="featured-products">
+                <!-- Rendered by JS -->
+            </div>
+            <button class="slider-nav-btn prev-btn" onclick="scrollSlider('featured-products', -1)" aria-label="Previous Products"><i class="fas fa-chevron-left"></i></button>
+            <button class="slider-nav-btn next-btn" onclick="scrollSlider('featured-products', 1)" aria-label="Next Products"><i class="fas fa-chevron-right"></i></button>
+        </div>
+        <div style="text-align:center; margin-top:var(--space-2xl);">
+            <a href="shop.html" class="btn btn-outline-gold btn-lg">View All Products <i class="fas fa-arrow-right" style="margin-left:8px;"></i></a>
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════════ THE VK PROMISE (TRUST & CERTIFICATIONS) ═══════════════ -->
+<section class="section bg-ivory reveal" id="trust-section" style="border-top:1px solid var(--color-gray-100); border-bottom:1px solid var(--color-gray-100);">
+    <div class="container">
+        <div class="section-header">
+            <span class="section-label" style="color:var(--color-gold);">The VK Promise</span>
+            <h2 class="section-title" style="color:var(--color-dark);">Our Trust Guarantee</h2>
+            <p class="section-subtitle" style="color:var(--color-gray-600);">Providing complete authenticity and purity assurances, inspired by the standards of India's leading luxury jewellers.</p>
+            <div class="gold-line"></div>
+        </div>
+        <div class="trust-grid stagger-children">
+            <div class="trust-card">
+                <div class="trust-card-icon"><i class="fas fa-certificate"></i></div>
+                <h3>100% Certified Gems</h3>
+                <p>Every stone is individually tested and certified by top international labs like GIA, GRS, or IGI.</p>
+            </div>
+            <div class="trust-card">
+                <div class="trust-card-icon"><i class="fas fa-gem"></i></div>
+                <h3>BIS Hallmarked Gold</h3>
+                <p>Every customized ring, pendant, or earring mounting features certified BIS hallmarking for purity.</p>
+            </div>
+            <div class="trust-card">
+                <div class="trust-card-icon"><i class="fas fa-shield-halved"></i></div>
+                <h3>Transit Insured Delivery</h3>
+                <p>Fully insured door-to-door delivery. Every package is completely covered until it reaches you.</p>
+            </div>
+            <div class="trust-card">
+                <div class="trust-card-icon"><i class="fas fa-rotate"></i></div>
+                <h3>Lifetime Exchange</h3>
+                <p>Transparent lifetime exchange and buyback options on all our fine jewelry gold mountings.</p>
+            </div>
+        </div>
+
+        <!-- Brand Trust Certifications Row -->
+        <div class="cert-logos-wrap" style="display:flex; justify-content:center; align-items:center; flex-wrap:wrap; gap:2.5rem; margin-top:3rem; padding-top:2.5rem; border-top:1px dashed var(--color-gray-200);">
+            <div style="font-family:var(--font-serif); font-size:1.15rem; font-weight:700; color:var(--color-gray-400); letter-spacing:0.15em;">GIA</div>
+            <div style="font-family:var(--font-serif); font-size:1.15rem; font-weight:700; color:var(--color-gray-400); letter-spacing:0.15em;">GRS</div>
+            <div style="font-family:var(--font-serif); font-size:1.15rem; font-weight:700; color:var(--color-gray-400); letter-spacing:0.15em;">IGI</div>
+            <div style="display:flex; align-items:center; gap:0.5rem; font-family:var(--font-sans); font-size:0.75rem; font-weight:800; color:var(--color-gray-400); letter-spacing:0.1em; text-transform:uppercase;">
+                <i class="fas fa-gem" style="color:var(--color-gold); font-size:0.95rem;"></i> BIS HALLMARKED
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════════ TESTIMONIALS ═══════════════ -->
+<section class="section reveal" id="testimonials-section">
+    <div class="container">
+        <div class="section-header">
+            <span class="section-label">Happy Customers</span>
+            <h2 class="section-title">What Our Clients Say</h2>
+            <p class="section-subtitle">Trusted by thousands across India for quality, authenticity, and value.</p>
+            <div class="gold-line"></div>
+        </div>
+        <div class="testimonial-scroll hide-scrollbar">
+            <div class="testimonial-card">
+                <div class="testimonial-stars">
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                </div>
+                <p class="testimonial-text">"I purchased a Ceylon Blue Sapphire for my engagement ring and the quality exceeded all expectations. The GRS certificate gave me complete confidence. VijayKumar's team even helped me choose the perfect carat weight for my budget."</p>
+                <div style="margin-top:auto; padding-top:var(--space-md); display:flex; align-items:center; gap:var(--space-sm);">
+                    <div style="width:32px; height:32px; border-radius:50%; background:var(--color-gold); display:flex; align-items:center; justify-content:center; color:var(--color-white); font-weight:600; font-family:var(--font-serif); font-size:0.8rem;">P</div>
+                    <div>
+                        <strong class="testimonial-author" style="display:block;">Priya Sharma</strong>
+                        <span class="testimonial-location">Mumbai</span>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial-card">
+                <div class="testimonial-stars">
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                </div>
+                <p class="testimonial-text">"Bought a Yellow Sapphire for astrological purposes. The gemologist spent 30 minutes explaining the differences between heated and unheated stones. Received a beautiful unheated Pukhraj with GIA certification. Truly professional service."</p>
+                <div style="margin-top:auto; padding-top:var(--space-md); display:flex; align-items:center; gap:var(--space-sm);">
+                    <div style="width:32px; height:32px; border-radius:50%; background:var(--color-gold); display:flex; align-items:center; justify-content:center; color:var(--color-white); font-weight:600; font-family:var(--font-serif); font-size:0.8rem;">R</div>
+                    <div>
+                        <strong class="testimonial-author" style="display:block;">Rajesh Iyer</strong>
+                        <span class="testimonial-location">Chennai</span>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial-card">
+                <div class="testimonial-stars">
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                </div>
+                <p class="testimonial-text">"I ordered a Bespoke Diamond Gold Ring as an anniversary gift. The packaging was luxurious, the diamonds sparkled beautifully, and it arrived two days early! My wife was absolutely thrilled. Will definitely shop again for our next celebration."</p>
+                <div style="margin-top:auto; padding-top:var(--space-md); display:flex; align-items:center; gap:var(--space-sm);">
+                    <div style="width:32px; height:32px; border-radius:50%; background:var(--color-gold); display:flex; align-items:center; justify-content:center; color:var(--color-white); font-weight:600; font-family:var(--font-serif); font-size:0.8rem;">A</div>
+                    <div>
+                        <strong class="testimonial-author" style="display:block;">Anita Gupta</strong>
+                        <span class="testimonial-location">Delhi</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- ═══════════════ FOOTER ═══════════════ -->
+<div id="footer-root"></div>
+
+<!-- ═══════════════ SCRIPTS ═══════════════ -->
+<script src="js/app.js"></script>
+<script>
+    // Render Bestseller / Popular products into the featured grid
+    (function() {
+        const container = document.getElementById('featured-products');
+        if (!container) return;
+
+        const featured = products.filter(p => p.badge === 'Bestseller' || p.badge === 'Popular');
+        const toShow = featured.slice(0, 8);
+
+        toShow.forEach(product => {
+            const cardHTML = renderProductCard(product);
+            const wrapper = document.createElement('div');
+            wrapper.className = 'featured-product-wrapper';
+            wrapper.innerHTML = cardHTML;
+            container.appendChild(wrapper);
+        });
+
+        // Refresh scroll-reveal animations after dynamic content
+        if (typeof refreshAnimations === 'function') {
+            refreshAnimations();
+        }
+    })();
+
+    // Hero Slider Carousel Logic
+    (function() {
+        let currentHeroSlide = 0;
+        const totalSlides = 4;
+        const container = document.getElementById('hero-slides-container');
+        const dots = document.querySelectorAll('#hero-dots-container .hero-dot');
+        let timer = null;
+
+        if (!container || dots.length === 0) return;
+
+        window.goToHeroSlide = function(idx) {
+            currentHeroSlide = (idx + totalSlides) % totalSlides;
+            container.style.transform = `translateX(-${currentHeroSlide * 25}%)`; // 100% / 4 = 25% per slide
+            
+            dots.forEach((dot, index) => {
+                if (index === currentHeroSlide) {
+                    dot.classList.add('active');
+                } else {
+                    dot.classList.remove('active');
+                }
+            });
+            resetTimer();
+        };
+
+        window.moveHeroSlide = function(direction) {
+            goToHeroSlide(currentHeroSlide + direction);
+        };
+
+        function resetTimer() {
+            if (timer) clearInterval(timer);
+            timer = setInterval(() => {
+                goToHeroSlide(currentHeroSlide + 1);
+            }, 6000); // Auto slide every 6 seconds
+        }
+
+        resetTimer();
+    })();
+</script>
+</body>
+</html>

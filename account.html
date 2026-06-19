@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Account — VijayKumar Diamonds & Gems</title>
+    <meta name="description" content="View your order history, manage your wishlist, and update your profile details on VijayKumar Diamonds & Gems.">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="icon" href="images/logo.jpeg" type="image/jpeg">
+</head>
+<body>
+
+<!-- Page Loader -->
+<div id="page-loader" class="page-loader">
+    <img src="images/logo.jpeg" alt="VK">
+    <div class="loader-bar"><div class="loader-bar-inner"></div></div>
+</div>
+
+<!-- Dynamic Header -->
+<div id="header-root"></div>
+
+<!-- Main Account Container -->
+<main class="container" style="padding-top: var(--space-xl); padding-bottom: var(--space-4xl);">
+
+    <!-- Breadcrumbs -->
+    <div class="breadcrumbs">
+        <a href="index.html">Home</a> <span>/</span> <span class="current">My Account</span>
+    </div>
+
+    <!-- Login Page (If not logged in) -->
+    <div id="account-login-card" style="display: none; max-width: 450px; margin: var(--space-3xl) auto; background: var(--color-white); border: 1px solid var(--color-gray-200); border-radius: var(--radius-lg); padding: var(--space-2xl); box-shadow: var(--shadow-sm);">
+        <div style="text-align: center; margin-bottom: var(--space-xl);">
+            <img src="images/logo.jpeg" alt="VK" style="height: 60px; margin-bottom: var(--space-md); border-radius: var(--radius-sm);">
+            <h2 style="font-family: var(--font-serif); font-size: 1.5rem; font-weight: 700; color: var(--color-dark);">Sign In / Register</h2>
+            <p style="font-size: 0.85rem; color: var(--color-gray-500); margin-top: 0.25rem;">Enter your mobile number to access your account.</p>
+        </div>
+
+        <!-- Phone screen -->
+        <div id="account-phone-group">
+            <label class="form-label">Mobile Number</label>
+            <div style="display: flex; gap: 0.5rem; margin-bottom: var(--space-lg);">
+                <span style="padding: 0.6rem 0.75rem; border: 1.5px solid var(--color-gray-200); border-radius: var(--radius-sm); font-weight: 700; font-size: 0.9rem; background: var(--color-gray-50);">+91</span>
+                <input type="tel" id="login-phone" class="form-input" placeholder="Enter 10-digit number" maxlength="10" style="margin-bottom: 0;">
+            </div>
+            <button onclick="sendAccountOTP()" class="btn btn-gold btn-full">Get One-Time Password</button>
+        </div>
+
+        <!-- OTP screen -->
+        <div id="account-otp-group" style="display: none;">
+            <label class="form-label">Enter 6-Digit OTP</label>
+            <p style="font-size:0.75rem; color:var(--color-gray-400); margin-bottom:var(--space-sm);">Demo OTP is <strong style="color:var(--color-dark)">123456</strong></p>
+            <div class="otp-container" style="margin-bottom: var(--space-lg);">
+                <input type="text" class="otp-box" maxlength="1" onkeyup="handleAccountOtpInput(this, event, 0)">
+                <input type="text" class="otp-box" maxlength="1" onkeyup="handleAccountOtpInput(this, event, 1)">
+                <input type="text" class="otp-box" maxlength="1" onkeyup="handleAccountOtpInput(this, event, 2)">
+                <input type="text" class="otp-box" maxlength="1" onkeyup="handleAccountOtpInput(this, event, 3)">
+                <input type="text" class="otp-box" maxlength="1" onkeyup="handleAccountOtpInput(this, event, 4)">
+                <input type="text" class="otp-box" maxlength="1" onkeyup="handleAccountOtpInput(this, event, 5)">
+            </div>
+            <button onclick="verifyAccountOTP()" class="btn btn-gold btn-full">Verify &amp; Sign In</button>
+            <button onclick="resendAccountOTP()" style="background:none; border:none; color:var(--color-gold-dark); cursor:pointer; font-size:0.75rem; font-weight:700; margin-top:var(--space-md); display:block; text-align:center; width:100%;">Resend Code</button>
+        </div>
+    </div>
+
+    <!-- Dashboard Page (If logged in) -->
+    <div id="account-dashboard" style="display: none;">
+        
+        <!-- Welcome Header -->
+        <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: var(--space-md); border-bottom: 1px solid var(--color-gray-200); padding-bottom: var(--space-lg); margin-bottom: var(--space-2xl);">
+            <div>
+                <span class="section-label">Welcome Back</span>
+                <div style="display: flex; align-items: baseline; gap: var(--space-sm);">
+                    <h1 style="font-family: var(--font-serif); font-size: 2.5rem; color: var(--color-dark); margin: 0;" id="welcome-name-title">Guest</h1>
+                    <span style="font-size: 1.2rem; color: var(--color-gray-500);" id="welcome-phone-title">+91 00000 00000</span>
+                </div>
+            </div>
+            <button onclick="handleLogout()" class="btn btn-outline" style="font-size:0.8rem; padding:0.5rem 1.25rem;"><i class="fas fa-sign-out-alt" style="margin-right:6px;"></i> Sign Out</button>
+        </div>
+
+        <!-- 3 Tabs Navigation -->
+        <div class="tabs" style="width: 100%;">
+            <div style="display: flex; gap: var(--space-xl); border-bottom: 1px solid var(--color-gray-200); margin-bottom: var(--space-xl);" id="dashboard-tabs-header">
+                <button class="tab-btn active" onclick="switchDashboardTab(event, 'dash-orders')" style="background:none; border:none; padding-bottom:var(--space-sm); font-family:var(--font-serif); font-size:1.1rem; font-weight:600; cursor:pointer; color:var(--color-dark); border-bottom: 2px solid var(--color-gold); outline:none;">My Orders (<span id="orders-count-tab">0</span>)</button>
+                <button class="tab-btn" onclick="switchDashboardTab(event, 'dash-wishlist')" style="background:none; border:none; padding-bottom:var(--space-sm); font-family:var(--font-serif); font-size:1.1rem; font-weight:600; cursor:pointer; color:var(--color-gray-500); border-bottom: 2px solid transparent; outline:none;">My Wishlist (<span id="wishlist-count-tab">0</span>)</button>
+                <button class="tab-btn" onclick="switchDashboardTab(event, 'dash-profile')" style="background:none; border:none; padding-bottom:var(--space-sm); font-family:var(--font-serif); font-size:1.1rem; font-weight:600; cursor:pointer; color:var(--color-gray-500); border-bottom: 2px solid transparent; outline:none;">Edit Profile</button>
+            </div>
+
+            <!-- Tab 1: Orders -->
+            <div id="dash-orders" class="tab-content" style="display: block;">
+                <div id="orders-empty-state" style="display: none; text-align: center; padding: 4rem 1rem; color: var(--color-gray-500);">
+                    <i class="fas fa-box" style="font-size: 2.5rem; opacity: 0.3; margin-bottom: 1rem; display: block; color: var(--color-gold);"></i>
+                    <p style="font-size: 0.85rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;">You haven't placed any orders yet</p>
+                    <a href="shop.html" class="btn btn-gold btn-sm" style="margin-top: var(--space-md);">Explore Gemstones</a>
+                </div>
+                <div id="orders-list-container" style="display: flex; flex-direction: column; gap: var(--space-lg);">
+                    <!-- Dynamic Orders List -->
+                </div>
+            </div>
+
+            <!-- Tab 2: Wishlist -->
+            <div id="dash-wishlist" class="tab-content" style="display: none;">
+                <div id="wishlist-empty-state" style="display: none; text-align: center; padding: 4rem 1rem; color: var(--color-gray-500);">
+                    <i class="far fa-heart" style="font-size: 2.5rem; opacity: 0.3; margin-bottom: 1rem; display: block; color: var(--color-red);"></i>
+                    <p style="font-size: 0.85rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;">Your wishlist is empty</p>
+                    <a href="shop.html" class="btn btn-gold btn-sm" style="margin-top: var(--space-md);">Browse Collection</a>
+                </div>
+                <div class="product-grid" id="wishlist-grid-container">
+                    <!-- Wishlist Product Card Grid -->
+                </div>
+            </div>
+
+            <!-- Tab 3: Profile -->
+            <div id="dash-profile" class="tab-content" style="display: none; max-width: 500px;">
+                <form id="profile-edit-form" onsubmit="saveProfileChanges(event)">
+                    <div style="margin-bottom: var(--space-md);">
+                        <label class="form-label">Full Name</label>
+                        <input type="text" class="form-input" id="profile-name" required>
+                    </div>
+                    <div style="margin-bottom: var(--space-md);">
+                        <label class="form-label">Email Address</label>
+                        <input type="email" class="form-input" id="profile-email">
+                    </div>
+                    <div style="margin-bottom: var(--space-md);">
+                        <label class="form-label">Mobile Number (Readonly)</label>
+                        <input type="tel" class="form-input" id="profile-phone" readonly style="background:var(--color-gray-50);">
+                    </div>
+                    <div style="margin-bottom: var(--space-md);">
+                        <label class="form-label">Address</label>
+                        <textarea class="form-input" id="profile-address" rows="3" placeholder="Enter your full address"></textarea>
+                    </div>
+                    <div style="display: flex; gap: var(--space-md); margin-bottom: var(--space-lg);">
+                        <div style="flex: 1;">
+                            <label class="form-label">City</label>
+                            <input type="text" class="form-input" id="profile-city">
+                        </div>
+                        <div style="flex: 1;">
+                            <label class="form-label">Pincode</label>
+                            <input type="text" class="form-input" id="profile-pincode">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-gold btn-md">Save Profile Settings</button>
+                </form>
+            </div>
+        </div>
+
+    </div>
+
+</main>
+
+<!-- Dynamic Footer -->
+<div id="footer-root"></div>
+
+<!-- Scripts -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<script src="js/app.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        renderAccountPage();
+    });
+
+    // Main Page director
+    function renderAccountPage() {
+        const loginCard = document.getElementById('account-login-card');
+        const dashboard = document.getElementById('account-dashboard');
+
+        if (isLoggedIn()) {
+            loginCard.style.display = 'none';
+            dashboard.style.display = 'block';
+            
+            document.getElementById('welcome-name-title').textContent = currentUser.name || 'User';
+            document.getElementById('welcome-phone-title').textContent = currentUser.phone;
+            document.getElementById('profile-phone').value = currentUser.phone;
+            document.getElementById('profile-name').value = currentUser.name || '';
+            document.getElementById('profile-email').value = currentUser.email || '';
+            document.getElementById('profile-address').value = currentUser.address || '';
+            document.getElementById('profile-city').value = currentUser.city || '';
+            document.getElementById('profile-pincode').value = currentUser.pincode || '';
+
+            renderOrdersTab();
+            renderWishlistTab();
+        } else {
+            loginCard.style.display = 'block';
+            dashboard.style.display = 'none';
+        }
+    }
+
+    // OTP Sending Logic
+    let accountPhone = '';
+    window.sendAccountOTP = function() {
+        const phoneInput = document.getElementById('login-phone');
+        if (!phoneInput || phoneInput.value.length !== 10) {
+            showToast('Please enter a valid 10-digit mobile number.', 'error');
+            return;
+        }
+
+        accountPhone = phoneInput.value;
+        document.getElementById('account-phone-group').style.display = 'none';
+        document.getElementById('account-otp-group').style.display = 'block';
+        showToast('Verification code sent successfully!', 'success');
+    };
+
+    window.resendAccountOTP = function() {
+        showToast('Verification code resent successfully!', 'success');
+    };
+
+    // OTP Inputs helper
+    let accountOtpVals = ['', '', '', '', '', ''];
+    window.handleAccountOtpInput = function(el, e, idx) {
+        accountOtpVals[idx] = el.value;
+        if (el.value.length === 1 && idx < 5) {
+            el.nextElementSibling.focus();
+        } else if (e.key === 'Backspace' && idx > 0) {
+            el.previousElementSibling.focus();
+        }
+    };
+
+    window.verifyAccountOTP = function() {
+        const code = accountOtpVals.join('');
+        if (code === '123456') {
+            login(accountPhone);
+            renderAccountPage();
+        } else {
+            showToast('Invalid verification code. Use 123456.', 'error');
+        }
+    };
+
+    // Sign Out
+    window.handleLogout = function() {
+        logout();
+        // Clear login forms
+        document.getElementById('account-phone-group').style.display = 'block';
+        document.getElementById('account-otp-group').style.display = 'none';
+        document.getElementById('login-phone').value = '';
+        accountOtpVals = ['', '', '', '', '', ''];
+        document.querySelectorAll('#account-otp-group .otp-box').forEach(el => el.value = '');
+        
+        renderAccountPage();
+    };
+
+    // Edit Profile
+    window.saveProfileChanges = function(e) {
+        e.preventDefault();
+        currentUser.name = document.getElementById('profile-name').value;
+        currentUser.email = document.getElementById('profile-email').value;
+        currentUser.address = document.getElementById('profile-address').value;
+        currentUser.city = document.getElementById('profile-city').value;
+        currentUser.pincode = document.getElementById('profile-pincode').value;
+        saveState();
+        showToast('Profile updated successfully!', 'success');
+        document.getElementById('welcome-name-title').textContent = currentUser.name || 'User';
+    };
+
+    // Tab Switching
+    window.switchDashboardTab = function(event, tabId) {
+        document.querySelectorAll('#account-dashboard .tab-btn').forEach(btn => {
+            btn.classList.remove('active');
+            btn.style.color = 'var(--color-gray-500)';
+            btn.style.borderBottomColor = 'transparent';
+        });
+        document.querySelectorAll('#account-dashboard .tab-content').forEach(content => {
+            content.style.display = 'none';
+        });
+
+        event.currentTarget.classList.add('active');
+        event.currentTarget.style.color = 'var(--color-dark)';
+        event.currentTarget.style.borderBottomColor = 'var(--color-gold)';
+        document.getElementById(tabId).style.display = 'block';
+    };
+
+    // Render Orders Tab
+    function renderOrdersTab() {
+        document.getElementById('orders-count-tab').textContent = orders.length;
+
+        const empty = document.getElementById('orders-empty-state');
+        const container = document.getElementById('orders-list-container');
+
+        if (orders.length === 0) {
+            empty.style.display = 'block';
+            container.style.display = 'none';
+            return;
+        }
+
+        empty.style.display = 'none';
+        container.style.display = 'flex';
+
+        container.innerHTML = orders.map(order => `
+            <div class="order-card reveal">
+                <div class="order-card-header">
+                    <div>
+                        <span style="font-size:0.75rem; color:var(--color-gray-500); display:block;">Order ID</span>
+                        <strong style="font-size:0.9rem; color:var(--color-dark);">#${order.id}</strong>
+                    </div>
+                    <div>
+                        <span style="font-size:0.75rem; color:var(--color-gray-500); display:block;">Placed On</span>
+                        <strong style="font-size:0.9rem; color:var(--color-dark);">${order.date}</strong>
+                    </div>
+                    <div>
+                        <span style="font-size:0.75rem; color:var(--color-gray-500); display:block;">Total Paid</span>
+                        <strong style="font-size:0.9rem; color:var(--color-gold-dark);">${formatPrice(order.total)}</strong>
+                    </div>
+                    <div>
+                        <span class="badge-gold" style="margin-bottom:6px;"><i class="${order.statusIcon || 'fas fa-cog fa-spin'}"></i> ${order.status}</span>
+                        <button onclick="downloadAccountInvoice('${order.id}')" style="background:var(--color-ivory); border:1px solid var(--color-gold-light); color:var(--color-gold-dark); cursor:pointer; font-size:0.65rem; font-weight:700; display:flex; align-items:center; gap:4px; padding:0.2rem 0.5rem; border-radius:var(--radius-sm); outline:none; margin-top:4px;"><i class="fas fa-file-pdf"></i> Download Invoice</button>
+                    </div>
+                </div>
+
+                <!-- Order items list -->
+                <div style="display:flex; flex-direction:column; gap:0.75rem;">
+                    ${order.items.map(item => {
+                        const price = item.options && item.options.price ? item.options.price : (item.product ? item.product.price : 0);
+                        const optionsSummary = getOptionSummary(item.options);
+                        return `
+                            <div style="display:flex; gap:0.75rem; align-items:center;">
+                                <img src="${item.product ? item.product.image : 'images/ruby.png'}" style="width:45px; height:55px; object-fit:cover; border-radius:var(--radius-sm); border:1px solid var(--color-gray-100);">
+                                <div style="flex:1;">
+                                    <h5 style="font-family:var(--font-serif); font-size:0.9rem; font-weight:600; color:var(--color-dark); margin:0;">${item.product ? item.product.name : 'Unknown Product'}</h5>
+                                    <span style="font-size:0.75rem; color:var(--color-gray-500);">Qty: ${item.qty} &bull; Price: ${formatPrice(price)}</span>
+                                    ${optionsSummary ? `<div style="font-size:0.65rem; color:var(--color-gold-dark); margin-top:2px; line-height:1.2;">${optionsSummary}</div>` : ''}
+                                </div>
+                            </div>
+                        `;
+                    }).join('')}
+                </div>
+            </div>
+        `).join('');
+    }
+
+    // Render Wishlist Tab
+    window.renderPageProducts = function() {
+        renderWishlistTab();
+    };
+
+    function renderWishlistTab() {
+        document.getElementById('wishlist-count-tab').textContent = wishlist.length;
+
+        const empty = document.getElementById('wishlist-empty-state');
+        const container = document.getElementById('wishlist-grid-container');
+
+        if (wishlist.length === 0) {
+            empty.style.display = 'block';
+            container.style.display = 'none';
+            return;
+        }
+
+        empty.style.display = 'none';
+        container.style.display = ''; // Restore grid style
+
+        container.innerHTML = wishlist.map(id => {
+            const product = getProduct(id);
+            if (!product) return '';
+            return renderProductCard(product);
+        }).join('');
+
+        if (typeof refreshAnimations === 'function') {
+            refreshAnimations();
+        }
+    }
+
+    // --- PDF INVOICE GENERATOR & NUMBER-TO-WORDS ---
+    window.downloadAccountInvoice = function(orderId) {
+        const order = orders.find(o => o.id === orderId || o.id === parseInt(orderId));
+        if (!order) {
+            showToast('No order data found to download invoice.', 'error');
+            return;
+        }
+
+        const address = order.address || {};
+        
+        // Populate Invoice fields
+        document.getElementById('inv-id').textContent = 'INV-2026-' + order.id;
+        document.getElementById('inv-date').textContent = order.date || new Date().toLocaleDateString('en-IN');
+        
+        const state = address.state || 'Tamil Nadu';
+        document.getElementById('inv-supply-place').textContent = state;
+
+        // Bill to
+        document.getElementById('inv-bill-name').textContent = (address.fname || currentUser?.name || 'Customer') + ' ' + (address.lname || '');
+        document.getElementById('inv-bill-phone').textContent = address.phone ? '+91 ' + address.phone : (currentUser?.phone || '');
+        document.getElementById('inv-bill-email').textContent = address.email || currentUser?.email || 'N/A';
+
+        // Ship to
+        document.getElementById('inv-ship-address').textContent = address.address || 'Address not provided';
+        document.getElementById('inv-ship-city').textContent = address.city || 'N/A';
+        document.getElementById('inv-ship-state').textContent = address.state || 'N/A';
+        document.getElementById('inv-ship-pincode').textContent = address.pincode || 'N/A';
+
+        // Items table
+        const tbody = document.getElementById('inv-items-body');
+        tbody.innerHTML = '';
+        
+        order.items.forEach((item, index) => {
+            const p = item.product;
+            const price = item.options && item.options.price ? item.options.price : (p ? p.price : 0);
+            const name = p ? p.name : 'Unknown Product';
+            const category = p ? p.category : 'Jewelry';
+            
+            // HSN code: Loose gemstones HSN 7103, Jewelry 7113
+            let hsn = '7113';
+            const gemCats = ['Yellow Sapphire', 'Blue Sapphire', 'Emerald', 'Ruby', 'Opal', 'Pearl', 'Red Coral', 'Hessonite'];
+            if (gemCats.includes(category)) {
+                hsn = '7103';
+            }
+            
+            let specs = '';
+            if (p && p.carat) specs += p.carat + ' Ct';
+            if (item.options && item.options.metal) {
+                specs += (specs ? ' | ' : '') + item.options.metal;
+            }
+            if (!specs) specs = 'Natural Stone';
+
+            const tr = document.createElement('tr');
+            tr.style.borderBottom = '1px solid #f2edd9';
+            tr.innerHTML = `
+                <td style="padding: 10px; border: 1px solid #f2edd9; text-align: center;">${index + 1}</td>
+                <td style="padding: 10px; border: 1px solid #f2edd9;">
+                    <strong style="color: #1a1a1a;">${name}</strong>
+                    ${item.options && item.options.wearType && item.options.wearType !== 'Loose' ? `<div style="font-size:0.7rem; color:#777777; margin-top:2px;">Mounted as: ${item.options.wearType} (${item.options.metal})</div>` : ''}
+                </td>
+                <td style="padding: 10px; border: 1px solid #f2edd9; text-align: center;">${hsn}</td>
+                <td style="padding: 10px; border: 1px solid #f2edd9; text-align: center;">${specs}</td>
+                <td style="padding: 10px; border: 1px solid #f2edd9; text-align: center;">${item.qty}</td>
+                <td style="padding: 10px; border: 1px solid #f2edd9; text-align: right;">₹${price.toLocaleString('en-IN')}</td>
+                <td style="padding: 10px; border: 1px solid #f2edd9; text-align: right;">₹${(price * item.qty).toLocaleString('en-IN')}</td>
+            `;
+            tbody.appendChild(tr);
+        });
+
+        // Finance Summary
+        const subtotal = order.subtotal || 0;
+        const discount = order.discount || 0;
+        const taxable = subtotal - discount;
+        const shipping = order.shipping !== undefined ? order.shipping : (subtotal >= 50000 ? 0 : 500);
+        const gst = order.gst !== undefined ? order.gst : Math.round(taxable * 0.03);
+        const total = order.total !== undefined ? order.total : (taxable + shipping + gst);
+
+        document.getElementById('inv-subtotal').textContent = '₹' + subtotal.toLocaleString('en-IN');
+        
+        const discRow = document.getElementById('inv-discount-row');
+        if (discount > 0) {
+            discRow.style.display = 'flex';
+            document.getElementById('inv-discount').textContent = '-₹' + discount.toLocaleString('en-IN');
+        } else {
+            discRow.style.display = 'none';
+        }
+        document.getElementById('inv-taxable').textContent = '₹' + taxable.toLocaleString('en-IN');
+
+        // GST splits
+        const gstSplitDiv = document.getElementById('inv-gst-split-section');
+        gstSplitDiv.innerHTML = '';
+        
+        const isTN = (state.toLowerCase().trim() === 'tamil nadu');
+        if (isTN) {
+            const cgst = Math.round(taxable * 0.015);
+            const sgst = Math.round(taxable * 0.015);
+            gstSplitDiv.innerHTML = `
+                <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+                    <span style="color: #555555;">CGST (1.5%):</span>
+                    <span style="font-weight: 600;">₹${cgst.toLocaleString('en-IN')}</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+                    <span style="color: #555555;">SGST (1.5%):</span>
+                    <span style="font-weight: 600;">₹${sgst.toLocaleString('en-IN')}</span>
+                </div>
+            `;
+        } else {
+            const igst = Math.round(taxable * 0.03);
+            gstSplitDiv.innerHTML = `
+                <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+                    <span style="color: #555555;">IGST (3.0%):</span>
+                    <span style="font-weight: 600;">₹${igst.toLocaleString('en-IN')}</span>
+                </div>
+            `;
+        }
+
+        document.getElementById('inv-shipping').textContent = shipping === 0 ? 'Free' : '₹' + shipping.toLocaleString('en-IN');
+        document.getElementById('inv-total').textContent = '₹' + total.toLocaleString('en-IN');
+
+        // Amount in words
+        document.getElementById('inv-amount-words').textContent = numberToWords(total);
+
+        // Options for html2pdf
+        const element = document.getElementById('invoice-template');
+        const opt = {
+            margin:       0.3,
+            filename:     'VK-Invoice-' + order.id + '.pdf',
+            image:        { type: 'jpeg', quality: 0.98 },
+            html2canvas:  { scale: 2.5, useCORS: true },
+            jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+        };
+
+        showToast('Generating high-quality invoice PDF...', 'info');
+        html2pdf().set(opt).from(element).save()
+            .then(() => {
+                showToast('Invoice PDF downloaded successfully!', 'success');
+            })
+            .catch(err => {
+                console.error(err);
+                showToast('Error generating PDF.', 'error');
+            });
+    };
+
+    function numberToWords(amount) {
+        const words = {
+            0: 'Zero', 1: 'One', 2: 'Two', 3: 'Three', 4: 'Four', 5: 'Five', 6: 'Six', 7: 'Seven', 8: 'Eight', 9: 'Nine',
+            10: 'Ten', 11: 'Eleven', 12: 'Twelve', 13: 'Thirteen', 14: 'Fourteen', 15: 'Fifteen', 16: 'Sixteen', 17: 'Seventeen', 18: 'Eighteen', 19: 'Nineteen',
+            20: 'Twenty', 30: 'Thirty', 40: 'Forty', 50: 'Fifty', 60: 'Sixty', 70: 'Seventy', 80: 'Eighty', 90: 'Ninety'
+        };
+        
+        function convertLessThanThousand(num) {
+            let temp = '';
+            if (num >= 100) {
+                temp += words[Math.floor(num / 100)] + ' Hundred ';
+                num %= 100;
+            }
+            if (num > 0) {
+                if (num < 20) {
+                    temp += words[num];
+                } else {
+                    temp += words[Math.floor(num / 10) * 10];
+                    if (num % 10 > 0) {
+                        temp += '-' + words[num % 10];
+                    }
+                }
+            }
+            return temp.trim();
+        }
+
+        let num = Math.round(amount);
+        if (num === 0) return 'Zero';
+        
+        let str = '';
+        
+        // Crores
+        if (num >= 10000000) {
+            str += convertLessThanThousand(Math.floor(num / 10000000)) + ' Crore ';
+            num %= 10000000;
+        }
+        // Lakhs
+        if (num >= 100000) {
+            str += convertLessThanThousand(Math.floor(num / 100000)) + ' Lakh ';
+            num %= 100000;
+        }
+        // Thousands
+        if (num >= 1000) {
+            str += convertLessThanThousand(Math.floor(num / 1000)) + ' Thousand ';
+            num %= 1000;
+        }
+        // Hundreds & Units
+        if (num > 0) {
+            str += convertLessThanThousand(num);
+        }
+        
+        return str.trim() + ' Rupees Only';
+    }
+</script>
+
+<!-- Off-screen Invoice Container for PDF generation -->
+<div style="position: absolute; left: -9999px; top: -9999px;">
+    <div id="invoice-template" style="width: 790px; padding: 40px; background: #ffffff; font-family: 'Outfit', 'Inter', sans-serif; color: #1a1a1a; line-height: 1.5; box-sizing: border-box;">
+        <!-- Header -->
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 2px solid #b89c56; padding-bottom: 20px; margin-bottom: 20px;">
+            <div style="display: flex; gap: 15px; align-items: center;">
+                <img src="data:image/png;base64,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" style="width: 55px; height: 55px; border-radius: 50%; border: 1.5px solid #b89c56; object-fit: cover;" alt="VK Logo">
+                <div>
+                    <h1 style="font-family: 'Playfair Display', serif; font-size: 1.6rem; font-weight: 700; color: #1a1a1a; margin: 0 0 5px 0; letter-spacing: 0.05em; text-transform: uppercase;">VijayKumar Diamonds <span style="font-family: 'Outfit', 'Inter', sans-serif; font-weight: 400;">&amp;</span> Gems</h1>
+                    <p style="font-size: 0.8rem; color: #555555; margin: 0 0 3px 0;">Venkatakrishna Street, Opposite Shanmuga Nursing Home, RS Puram</p>
+                    <p style="font-size: 0.8rem; color: #555555; margin: 0 0 3px 0;">Coimbatore - 641002, Tamil Nadu, India</p>
+                    <p style="font-size: 0.8rem; color: #555555; margin: 0 0 3px 0;">Phone: +91 90927 16427 | Email: info@vijaykumardiamonds.com</p>
+                    <p style="font-size: 0.8rem; color: #1a1a1a; font-weight: 700; margin: 5px 0 0 0;">GSTIN: 33AAAAA1111A1Z1 (Demo)</p>
+                </div>
+            </div>
+            <div style="text-align: right;">
+                <h2 style="font-family: 'Playfair Display', serif; font-size: 1.6rem; font-weight: 700; color: #b89c56; margin: 0 0 10px 0; letter-spacing: 0.1em; text-transform: uppercase;">Tax Invoice</h2>
+                <div style="font-size: 0.8rem; color: #555555;">
+                    <p style="margin: 0 0 3px 0;"><strong>Invoice No:</strong> <span id="inv-id">-</span></p>
+                    <p style="margin: 0 0 3px 0;"><strong>Date:</strong> <span id="inv-date">-</span></p>
+                    <p style="margin: 0 0 3px 0;"><strong>Place of Supply:</strong> <span id="inv-supply-place">-</span></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Billing details -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 25px;">
+            <div style="background: #fcfbf7; border: 1px solid #f2edd9; border-radius: 6px; padding: 15px;">
+                <h3 style="font-family: 'Playfair Display', serif; font-size: 0.9rem; font-weight: 700; color: #b89c56; margin: 0 0 8px 0; text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 1px solid #f2edd9; padding-bottom: 4px;">Billed To</h3>
+                <p style="font-size: 0.85rem; font-weight: 700; color: #1a1a1a; margin: 0 0 4px 0;"><span id="inv-bill-name">-</span></p>
+                <p style="font-size: 0.8rem; color: #555555; margin: 0 0 3px 0;">Phone: <span id="inv-bill-phone">-</span></p>
+                <p style="font-size: 0.8rem; color: #555555; margin: 0 0 3px 0;">Email: <span id="inv-bill-email">-</span></p>
+            </div>
+            <div style="background: #fcfbf7; border: 1px solid #f2edd9; border-radius: 6px; padding: 15px;">
+                <h3 style="font-family: 'Playfair Display', serif; font-size: 0.9rem; font-weight: 700; color: #b89c56; margin: 0 0 8px 0; text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 1px solid #f2edd9; padding-bottom: 4px;">Shipped To</h3>
+                <p style="font-size: 0.8rem; color: #555555; margin: 0 0 3px 0;" id="inv-ship-address">-</p>
+                <p style="font-size: 0.8rem; color: #555555; margin: 0 0 3px 0;"><span id="inv-ship-city">-</span>, <span id="inv-ship-state">-</span> - <span id="inv-ship-pincode">-</span></p>
+            </div>
+        </div>
+
+        <!-- Items Table -->
+        <table style="width: 100%; border-collapse: collapse; margin-bottom: 25px; font-size: 0.8rem;">
+            <thead>
+                <tr style="background: #b89c56; color: #ffffff; text-align: left;">
+                    <th style="padding: 10px; border: 1px solid #b89c56; font-weight: 700; width: 40px; text-align: center;">#</th>
+                    <th style="padding: 10px; border: 1px solid #b89c56; font-weight: 700;">Description of Goods</th>
+                    <th style="padding: 10px; border: 1px solid #b89c56; font-weight: 700; width: 80px; text-align: center;">HSN Code</th>
+                    <th style="padding: 10px; border: 1px solid #b89c56; font-weight: 700; width: 80px; text-align: center;">Weight/Specs</th>
+                    <th style="padding: 10px; border: 1px solid #b89c56; font-weight: 700; width: 50px; text-align: center;">Qty</th>
+                    <th style="padding: 10px; border: 1px solid #b89c56; font-weight: 700; width: 100px; text-align: right;">Rate (INR)</th>
+                    <th style="padding: 10px; border: 1px solid #b89c56; font-weight: 700; width: 100px; text-align: right;">Amount (INR)</th>
+                </tr>
+            </thead>
+            <tbody id="inv-items-body">
+                <!-- Dynamically populated -->
+            </tbody>
+        </table>
+
+        <!-- Summary & Tax Breakdowns -->
+        <div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 20px; align-items: flex-start; margin-bottom: 30px;">
+            <div style="font-size: 0.75rem; color: #555555; line-height: 1.6;">
+                <p style="margin: 0 0 5px 0;"><strong>Amount in Words:</strong></p>
+                <p style="font-size: 0.8rem; font-weight: 700; color: #1a1a1a; margin: 0 0 15px 0; font-style: italic;" id="inv-amount-words">-</p>
+                
+                <div style="border-top: 1px dashed #cccccc; padding-top: 10px;">
+                    <p style="margin: 0 0 4px 0;"><strong>Declarations <span style="font-family: 'Outfit', 'Inter', sans-serif; font-weight: 400;">&amp;</span> Terms:</strong></p>
+                    <p style="margin: 0; font-size: 0.7rem; color: #777777;">1. We declare that this invoice shows the actual price of the goods described and that all particulars are true and correct.</p>
+                    <p style="margin: 3px 0 0 0; font-size: 0.7rem; color: #777777;">2. All gemstones <span style="font-family: 'Outfit', 'Inter', sans-serif; font-weight: 400;">&amp;</span> diamonds are certified natural by GIA, IGI, or GRS. Gold mounts feature official BIS Hallmarking.</p>
+                    <p style="margin: 3px 0 0 0; font-size: 0.7rem; color: #777777;">3. Returns or exchanges must be initiated within 10 days of delivery with certificate labels intact.</p>
+                </div>
+            </div>
+            
+            <div style="background: #fcfbf7; border: 1px solid #f2edd9; border-radius: 6px; padding: 15px; font-size: 0.8rem;">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+                    <span style="color: #555555;">Subtotal:</span>
+                    <span style="font-weight: 600;" id="inv-subtotal">₹0</span>
+                </div>
+                <div style="display: none; justify-content: space-between; margin-bottom: 6px; color: #16a34a;" id="inv-discount-row">
+                    <span>Discount:</span>
+                    <span style="font-weight: 600;" id="inv-discount">-₹0</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 6px; border-bottom: 1px solid #f2edd9; padding-bottom: 6px;">
+                    <span style="color: #555555;">Taxable Value:</span>
+                    <span style="font-weight: 600;" id="inv-taxable">₹0</span>
+                </div>
+                
+                <!-- GST splits -->
+                <div id="inv-gst-split-section" style="border-bottom: 1px solid #f2edd9; padding-bottom: 6px; margin-bottom: 6px;">
+                    <!-- Dynamic SGST/CGST/IGST rows -->
+                </div>
+                
+                <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                    <span style="color: #555555;">Insured Shipping:</span>
+                    <span style="font-weight: 600;" id="inv-shipping">₹0</span>
+                </div>
+                
+                <div style="display: flex; justify-content: space-between; font-size: 0.95rem; border-top: 1.5px solid #b89c56; padding-top: 8px; margin-top: 4px;">
+                    <strong style="color: #1a1a1a;">Total Price (Incl. GST):</strong>
+                    <strong style="color: #b89c56;" id="inv-total">₹0</strong>
+                </div>
+            </div>
+        </div>
+
+        <!-- Signature Footer -->
+        <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-top: 40px; padding-top: 20px; border-top: 1px solid #f2edd9;">
+            <div style="font-size: 0.7rem; color: #777777;">
+                <p style="margin: 0 0 3px 0;">This is a computer-generated tax invoice and requires no physical seal.</p>
+                <p style="margin: 0;">Thank you for shopping at VijayKumar Diamonds <span style="font-family: 'Outfit', 'Inter', sans-serif; font-weight: 400;">&amp;</span> Gems.</p>
+            </div>
+            <div style="text-align: right; width: 220px;">
+                <p style="font-size: 0.75rem; color: #555555; margin: 0 0 10px 0;">For <strong>VijayKumar Diamonds <span style="font-family: 'Outfit', 'Inter', sans-serif; font-weight: 400;">&amp;</span> Gems</strong></p>
+                <div style="font-family: 'Brush Script MT', cursive; font-size: 1.6rem; color: #b89c56; line-height: 1; margin-bottom: 4px; padding-right: 20px;">Vijay Kumar</div>
+                <p style="font-size: 0.75rem; font-weight: 700; color: #1a1a1a; border-top: 1px solid #cccccc; display: inline-block; width: 100%; padding-top: 4px; margin: 0;">Authorized Signatory</p>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

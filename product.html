@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Details — VijayKumar Diamonds & Gems</title>
+    <meta name="description" content="Certified natural diamonds, gemstones, and fine jewelry. Buy authentic unheated Ruby, Sapphire, Emerald. GIA certified.">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="icon" href="images/logo.jpeg" type="image/jpeg">
+</head>
+<body>
+
+<!-- Page Loader -->
+<div id="page-loader" class="page-loader">
+    <img src="images/logo.jpeg" alt="VK">
+    <div class="loader-bar"><div class="loader-bar-inner"></div></div>
+</div>
+
+<!-- Dynamic Header -->
+<div id="header-root"></div>
+
+<!-- Main Content -->
+<main class="container" style="padding-top: var(--space-xl); padding-bottom: var(--space-4xl);" id="product-page-container">
+    
+    <!-- Breadcrumbs -->
+    <div class="breadcrumbs" id="detail-breadcrumbs">
+        <a href="index.html">Home</a> <span>/</span> <a href="shop.html">Shop</a> <span>/</span> <span class="current">Product</span>
+    </div>
+
+    <!-- Product Layout Grid -->
+    <div id="product-detail-layout">
+        <!-- JS will inject the Two Column Layout here -->
+    </div>
+
+    <!-- Tabs Section -->
+    <section class="section reveal" style="padding: var(--space-xl) 0; border-top: 1px solid var(--color-gray-200); border-bottom: 1px solid var(--color-gray-200); margin-bottom: var(--space-4xl);">
+        <div class="tabs" style="width: 100%;">
+            <div style="display: flex; gap: var(--space-xl); border-bottom: 1px solid var(--color-gray-200); margin-bottom: var(--space-lg);" id="tabs-header">
+                <button class="tab-btn active" onclick="switchTab(event, 'tab-desc')" style="background:none; border:none; padding-bottom:var(--space-sm); font-family:var(--font-serif); font-size:1.1rem; font-weight:600; cursor:pointer; color:var(--color-dark); border-bottom: 2px solid var(--color-gold); outline:none;">Description</button>
+                <button class="tab-btn" onclick="switchTab(event, 'tab-specs')" style="background:none; border:none; padding-bottom:var(--space-sm); font-family:var(--font-serif); font-size:1.1rem; font-weight:600; cursor:pointer; color:var(--color-gray-500); border-bottom: 2px solid transparent; outline:none;">Specifications</button>
+                <button class="tab-btn" onclick="switchTab(event, 'tab-reviews')" style="background:none; border:none; padding-bottom:var(--space-sm); font-family:var(--font-serif); font-size:1.1rem; font-weight:600; cursor:pointer; color:var(--color-gray-500); border-bottom: 2px solid transparent; outline:none;">Reviews (<span id="reviews-count-tab">0</span>)</button>
+            </div>
+            
+            <!-- Tab Contents -->
+            <div id="tab-desc" class="tab-content" style="display: block; line-height: 1.8;">
+                <!-- Injected Description -->
+            </div>
+            <div id="tab-specs" class="tab-content" style="display: none;">
+                <table class="table" style="width:100%; border-collapse:collapse;" id="specs-table-tab">
+                    <!-- Specifications -->
+                </table>
+            </div>
+            <div id="tab-reviews" class="tab-content" style="display: none;">
+                <div class="reviews-header">
+                    <h3 class="reviews-summary-title" id="reviews-summary-text">Average Rating: 5.0 (0 reviews)</h3>
+                    <button class="btn btn-gold btn-sm" onclick="showReviewToast()">Write A Review</button>
+                </div>
+                <div id="mock-reviews-list" style="display:flex; flex-direction:column; gap:var(--space-md);">
+                    <!-- Reviews list -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Related Products -->
+    <section class="section reveal" style="margin-bottom: var(--space-4xl);">
+        <div class="section-header" style="text-align: left; margin-bottom: var(--space-lg);">
+            <span class="section-label">Recommendations</span>
+            <h2 class="section-title" style="font-size: 1.75rem;">Related Products</h2>
+            <div class="gold-line" style="margin-left: 0;"></div>
+        </div>
+        <div class="slider-wrapper">
+            <div class="product-grid hide-scrollbar featured-scroll" id="related-products">
+                <!-- Dynamic Related Products -->
+            </div>
+            <button class="slider-nav-btn prev-btn" onclick="scrollSlider('related-products', -1)" aria-label="Previous Products"><i class="fas fa-chevron-left"></i></button>
+            <button class="slider-nav-btn next-btn" onclick="scrollSlider('related-products', 1)" aria-label="Next Products"><i class="fas fa-chevron-right"></i></button>
+        </div>
+    </section>
+
+    <!-- Recently Viewed Section -->
+    <section class="section reveal" id="recent-section" style="display:none; margin-bottom: var(--space-xl);">
+        <div class="section-header" style="text-align: left; margin-bottom: var(--space-lg);">
+            <span class="section-label">Your Browsing History</span>
+            <h2 class="section-title" style="font-size: 1.75rem;">Recently Viewed</h2>
+            <div class="gold-line" style="margin-left: 0;"></div>
+        </div>
+        <div class="slider-wrapper">
+            <div class="product-grid hide-scrollbar featured-scroll" id="recently-viewed-products">
+                <!-- Dynamic Recently Viewed -->
+            </div>
+            <button class="slider-nav-btn prev-btn" onclick="scrollSlider('recently-viewed-products', -1)" aria-label="Previous Products"><i class="fas fa-chevron-left"></i></button>
+            <button class="slider-nav-btn next-btn" onclick="scrollSlider('recently-viewed-products', 1)" aria-label="Next Products"><i class="fas fa-chevron-right"></i></button>
+        </div>
+    </section>
+
+</main>
+
+<!-- Dynamic Footer -->
+<div id="footer-root"></div>
+
+<!-- Scripts -->
+<script src="js/app.js"></script>
+<script>
+    let currentProduct = null;
+    let selectedQuantity = 1;
+
+    // Customization state
+    let selectedWearType = 'Loose';
+    let selectedMetal = '22K Yellow Gold';
+    let selectedSize = '14';
+
+    const metalPrices = {
+        'Ring': {
+            '22K Yellow Gold': 45000,
+            '18K White Gold': 35000,
+            'Sterling Silver': 4500,
+            'Panchdhatu': 6000
+        },
+        'Pendant': {
+            '22K Yellow Gold': 30000,
+            '18K White Gold': 24000,
+            'Sterling Silver': 3000,
+            'Panchdhatu': 4000
+        }
+    };
+
+    function calculateTotalPrice() {
+        if (!currentProduct) return 0;
+        let total = currentProduct.price;
+        const isLooseGem = gemCategories.includes(currentProduct.category);
+        if (isLooseGem) {
+            if (selectedWearType === 'Ring') {
+                total += 3500 + (metalPrices['Ring'][selectedMetal] || 0);
+            } else if (selectedWearType === 'Pendant') {
+                total += 2000 + (metalPrices['Pendant'][selectedMetal] || 0);
+            }
+        }
+        return total;
+    }
+
+    window.selectWearType = function(type) {
+        selectedWearType = type;
+        renderProductDetail();
+    };
+
+    window.selectMetal = function(metal) {
+        selectedMetal = metal;
+        renderProductDetail();
+    };
+
+    window.selectSize = function(size) {
+        selectedSize = size;
+        renderProductDetail();
+    };
+
+    document.addEventListener('DOMContentLoaded', () => {
+        // Parse ID from URL
+        const params = new URLSearchParams(window.location.search);
+        const productId = parseInt(params.get('id'));
+
+        if (!productId) {
+            window.location.href = 'shop.html';
+            return;
+        }
+
+        currentProduct = getProduct(productId);
+        if (!currentProduct) {
+            window.location.href = 'shop.html';
+            return;
+        }
+
+        // Add to recently viewed
+        addToRecentlyViewed(productId);
+
+        renderProductDetail();
+        renderTabsContent();
+        renderRelatedProducts();
+        renderRecentlyViewed();
+    });
+
+    // Render Two Column Layout
+    function renderProductDetail() {
+        const layout = document.getElementById('product-detail-layout');
+        if (!layout) return;
+
+        // Update title and breadcrumbs
+        document.title = `${currentProduct.name} — VijayKumar Diamonds & Gems`;
+        
+        const crumbs = document.getElementById('detail-breadcrumbs');
+        crumbs.innerHTML = `
+            <a href="index.html">Home</a> <span>/</span> 
+            <a href="shop.html">Shop</a> <span>/</span> 
+            <a href="shop.html?cat=${encodeURIComponent(currentProduct.category)}">${currentProduct.category}</a> <span>/</span> 
+            <span class="current">${currentProduct.name}</span>
+        `;
+
+        const discount = getDiscount(currentProduct);
+        const hasDiscount = discount > 0;
+        const stars = generateStars(currentProduct.rating);
+        const inWish = isInWishlist(currentProduct.id);
+
+        // Mock gallery images
+        const gallery = currentProduct.gallery && currentProduct.gallery.length > 0 
+            ? currentProduct.gallery 
+            : [currentProduct.image];
+
+        // Let's create mock thumbnails if it has only one image
+        if (gallery.length === 1) {
+            gallery.push(currentProduct.image); // Duplicate to simulate thumbnails
+            gallery.push(currentProduct.image);
+        }
+
+        // Left Column (Images) HTML
+        const leftColHTML = `
+            <div>
+                <div class="main-img-wrap">
+                    <img src="${gallery[0]}" id="main-product-image" alt="${currentProduct.name}">
+                    ${currentProduct.badge ? `<span class="product-card-badge" style="font-size: 0.65rem; padding: 0.35rem 0.75rem;">${currentProduct.badge}</span>` : ''}
+                </div>
+                <div class="thumb-bar hide-scrollbar">
+                    ${gallery.map((img, index) => `
+                        <img src="${img}" class="thumb-img ${index === 0 ? 'active' : ''}" onclick="changeMainImage('${img}', this)" alt="thumbnail">
+                    `).join('')}
+                </div>
+            </div>
+        `;
+
+        // Right Column (Details) HTML
+        const isLooseGem = gemCategories.includes(currentProduct.category);
+        const certBadgeHTML = `
+            <div style="background:var(--color-ivory); border:1px solid var(--color-gold-light); border-radius:var(--radius-md); padding:1rem; display:flex; align-items:center; gap:0.75rem; margin-bottom:var(--space-md);">
+                <i class="fas fa-shield-halved" style="color:var(--color-gold); font-size:1.5rem;"></i>
+                <div>
+                    <strong style="display:block; font-size:0.85rem; color:var(--color-dark);">Certified &amp; Authenticated</strong>
+                    <span style="font-size:0.75rem; color:var(--color-gray-500);">This natural gemstone comes with a laboratory verification certificate (${currentProduct.cert || 'Lab Certified'}).</span>
+                </div>
+            </div>
+            
+            <!-- Bluestone-style Promise Row -->
+            <div style="display:grid; grid-template-columns:repeat(3, 1fr); gap:0.5rem; text-align:center; margin-bottom:var(--space-lg); padding:0.75rem 0; border-top:1px dashed var(--color-gray-200); border-bottom:1px dashed var(--color-gray-200);">
+                <div style="display:flex; flex-direction:column; align-items:center; gap:4px;">
+                    <i class="fas fa-certificate" style="color:var(--color-gold); font-size:0.95rem;"></i>
+                    <span style="font-size:0.58rem; font-weight:700; color:var(--color-dark); text-transform:uppercase; letter-spacing:0.05em;">GIA/GRS/IGI</span>
+                    <span style="font-size:0.52rem; color:var(--color-gray-500);">100% Certified</span>
+                </div>
+                <div style="display:flex; flex-direction:column; align-items:center; gap:4px; border-left:1px solid var(--color-gray-200); border-right:1px solid var(--color-gray-200);">
+                    <i class="fas fa-gem" style="color:var(--color-gold); font-size:0.95rem;"></i>
+                    <span style="font-size:0.58rem; font-weight:700; color:var(--color-dark); text-transform:uppercase; letter-spacing:0.05em;">BIS Purity</span>
+                    <span style="font-size:0.52rem; color:var(--color-gray-500);">Gold Hallmark</span>
+                </div>
+                <div style="display:flex; flex-direction:column; align-items:center; gap:4px;">
+                    <i class="fas fa-truck-fast" style="color:var(--color-gold); font-size:0.95rem;"></i>
+                    <span style="font-size:0.58rem; font-weight:700; color:var(--color-dark); text-transform:uppercase; letter-spacing:0.05em;">Insured Transit</span>
+                    <span style="font-size:0.52rem; color:var(--color-gray-500);">Safe Delivery</span>
+                </div>
+            </div>
+        `;
+
+        const specsTableHTML = `
+            <div style="margin-bottom: var(--space-xl);">
+                <div class="spec-row"><span class="spec-label">Carat Weight</span><span class="spec-val">${currentProduct.carat || 'N/A'}</span></div>
+                <div class="spec-row"><span class="spec-label">Cut Shape</span><span class="spec-val">${currentProduct.cut || 'N/A'}</span></div>
+                ${currentProduct.color ? `<div class="spec-row"><span class="spec-label">Color Grade</span><span class="spec-val">${currentProduct.color}</span></div>` : ''}
+                ${currentProduct.clarity ? `<div class="spec-row"><span class="spec-label">Clarity Grade</span><span class="spec-val">${currentProduct.clarity}</span></div>` : ''}
+                ${currentProduct.origin ? `<div class="spec-row"><span class="spec-label">Origin / Mine</span><span class="spec-val">${currentProduct.origin}</span></div>` : ''}
+                <div class="spec-row"><span class="spec-label">Certification</span><span class="spec-val">${currentProduct.cert || 'Lab Certified'}</span></div>
+            </div>
+        `;
+
+        // Customization UI
+        const customConfigHTML = `
+            <div class="custom-options-container">
+                <div>
+                    <span class="option-label">How would you like to wear this?</span>
+                    <div class="wear-cards">
+                        <div class="wear-card ${selectedWearType === 'Loose' ? 'active' : ''}" onclick="selectWearType('Loose')">
+                            <span class="wear-card-title">Keep Loose</span>
+                            <span class="wear-card-sub">Gemstone only</span>
+                        </div>
+                        <div class="wear-card ${selectedWearType === 'Ring' ? 'active' : ''}" onclick="selectWearType('Ring')">
+                            <span class="wear-card-title">Mount in Ring</span>
+                            <span class="wear-card-sub">+ Custom Metal &amp; Size</span>
+                        </div>
+                        <div class="wear-card ${selectedWearType === 'Pendant' ? 'active' : ''}" onclick="selectWearType('Pendant')">
+                            <span class="wear-card-title">Mount in Pendant</span>
+                            <span class="wear-card-sub">+ Custom Metal</span>
+                        </div>
+                    </div>
+                </div>
+
+                ${selectedWearType !== 'Loose' ? `
+                    <div class="custom-select-wrap">
+                        <span class="option-label">Select Metal</span>
+                        <select id="metal-select" onchange="selectMetal(this.value)">
+                            <option value="22K Yellow Gold" ${selectedMetal === '22K Yellow Gold' ? 'selected' : ''}>22K Yellow Gold (Hallmarked)</option>
+                            <option value="18K White Gold" ${selectedMetal === '18K White Gold' ? 'selected' : ''}>18K White Gold</option>
+                            <option value="Sterling Silver" ${selectedMetal === 'Sterling Silver' ? 'selected' : ''}>Sterling Silver (92.5)</option>
+                            <option value="Panchdhatu" ${selectedMetal === 'Panchdhatu' ? 'selected' : ''}>Panchdhatu (5-Metal Alloy)</option>
+                        </select>
+                    </div>
+                ` : ''}
+
+                ${selectedWearType === 'Ring' ? `
+                    <div class="custom-select-wrap">
+                        <span class="option-label">Select Ring Size (Indian/Asian Standard)</span>
+                        <select id="size-select" onchange="selectSize(this.value)">
+                            ${Array.from({length: 16}, (_, i) => i + 10).map(s => `
+                                <option value="${s}" ${selectedSize === String(s) ? 'selected' : ''}>Size ${s}</option>
+                            `).join('')}
+                        </select>
+                        <span style="font-size:0.6rem; color:var(--color-gray-400); margin-top:0.15rem;"><i class="fas fa-info-circle"></i> Sizing references Indian Ring Size standards.</span>
+                    </div>
+                ` : ''}
+
+                <!-- Price Breakdown Box -->
+                <div class="price-summary-box">
+                    <div class="price-summary-row">
+                        <span>Gemstone Base Price:</span>
+                        <span>${formatPrice(currentProduct.price)}</span>
+                    </div>
+                    ${selectedWearType !== 'Loose' ? `
+                        <div class="price-summary-row">
+                            <span>Mounting &amp; Making Charges:</span>
+                            <span>${formatPrice(selectedWearType === 'Ring' ? 3500 : 2000)}</span>
+                        </div>
+                        <div class="price-summary-row">
+                            <span>${selectedMetal} Price:</span>
+                            <span>${formatPrice(metalPrices[selectedWearType][selectedMetal])}</span>
+                        </div>
+                    ` : ''}
+                    <div class="price-summary-row total">
+                        <span>Total Price:</span>
+                        <span>${formatPrice(calculateTotalPrice())}</span>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        const rightColHTML = `
+            <div style="display: flex; flex-direction: column;">
+                <!-- Category -->
+                <span style="font-size:0.7rem; font-weight:700; text-transform:uppercase; letter-spacing:0.15em; color:var(--color-gold-dark); margin-bottom:var(--space-xs);">${currentProduct.category}</span>
+                
+                <!-- Title -->
+                <h1 style="font-family:var(--font-serif); font-size:2rem; font-weight:700; color:var(--color-dark); margin-bottom:var(--space-sm); line-height:1.2;">${currentProduct.name}</h1>
+                
+                <!-- Rating -->
+                <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:var(--space-md);">
+                    <div style="color:var(--color-gold); font-size:0.85rem;">${stars}</div>
+                    <span style="font-size:0.75rem; color:var(--color-gray-500);">(${currentProduct.reviews || 0} customer reviews)</span>
+                </div>
+
+                <!-- Price -->
+                <div style="margin-bottom:var(--space-lg);">
+                    <span style="font-size:1.75rem; font-weight:800; color:var(--color-dark);">${formatPrice(calculateTotalPrice())}</span>
+                    ${hasDiscount && selectedWearType === 'Loose' ? `
+                        <span style="text-decoration:line-through; font-size:1.1rem; color:var(--color-gray-400); margin-left:0.5rem;">${formatPrice(currentProduct.mrp)}</span>
+                        <span style="color:var(--color-success); font-size:0.85rem; font-weight:700; margin-left:0.5rem; background:rgba(34,197,94,0.1); padding:0.2rem 0.5rem; border-radius:var(--radius-sm);">${discount}% Off</span>
+                    ` : ''}
+                    <p style="font-size:0.7rem; color:var(--color-gray-400); margin-top:0.25rem;">Price inclusive of all taxes.</p>
+                </div>
+
+                <!-- Description -->
+                <p style="font-size:0.95rem; color:var(--color-gray-600); line-height:1.7; margin-bottom:var(--space-lg);">${currentProduct.desc || 'A premium selection natural certified gemstone.'}</p>
+                
+                <div class="gold-line" style="margin-left:0; margin-bottom:var(--space-lg);"></div>
+
+                <!-- Specs Summary -->
+                ${specsTableHTML}
+
+                <!-- Certifications Badge -->
+                ${certBadgeHTML}
+
+                <!-- Customization Configurator -->
+                ${isLooseGem ? customConfigHTML : ''}
+
+                <!-- Actions (Qty, Cart, Wishlist) -->
+                <div style="display:flex; flex-direction:column; gap:var(--space-md); margin-bottom:var(--space-lg);">
+                    <div style="display:flex; align-items:center; gap:var(--space-md);">
+                        <span style="font-size:0.75rem; font-weight:700; text-transform:uppercase; color:var(--color-gray-500);">Quantity</span>
+                        <div style="display:flex; align-items:center; border:1.5px solid var(--color-gray-200); border-radius:var(--radius-sm); overflow:hidden;">
+                            <button onclick="changeQty(-1)" style="background:none; border:none; padding:0.5rem 0.75rem; cursor:pointer; font-weight:700;"><i class="fas fa-minus"></i></button>
+                            <span id="qty-text" style="padding:0.25rem 1rem; font-weight:700; min-width:40px; text-align:center;">1</span>
+                            <button onclick="changeQty(1)" style="background:none; border:none; padding:0.5rem 0.75rem; cursor:pointer; font-weight:700;"><i class="fas fa-plus"></i></button>
+                        </div>
+                    </div>
+
+                    <div style="display:flex; gap:0.5rem;">
+                        <button onclick="handleAddToCartClick()" class="btn btn-primary" style="flex:1; display:flex; align-items:center; justify-content:center; gap:0.5rem; font-size:0.95rem; padding:0.8rem 1rem;">
+                            <i class="fas fa-shopping-bag"></i> Add To Bag
+                        </button>
+                        <button onclick="handleWishlistToggle(event)" class="btn ${inWish ? 'btn-danger' : 'btn-outline'}" id="detail-wishlist-btn" style="width:50px; display:flex; align-items:center; justify-content:center; padding:0;">
+                            <i class="${inWish ? 'fas' : 'far'} fa-heart" style="${inWish ? 'color:var(--color-white)' : 'color:var(--color-red)'}"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Share & Delivery -->
+                <div style="border-top:1px solid var(--color-gray-200); padding-top:var(--space-md);">
+                    <div style="display:flex; flex-wrap:wrap; justify-content:space-between; gap:var(--space-sm); font-size:0.8rem; color:var(--color-gray-500);">
+                        <span><i class="fas fa-truck" style="margin-right:0.25rem; color:var(--color-gold)"></i> Free shipping above ₹50,000</span>
+                        <span><i class="fas fa-clock" style="margin-right:0.25rem; color:var(--color-gold)"></i> Estimated Delivery: 3—5 Days</span>
+                    </div>
+
+                    <div style="display:flex; align-items:center; gap:0.5rem; margin-top:var(--space-md);">
+                        <span style="font-size:0.75rem; font-weight:700; color:var(--color-gray-500); text-transform:uppercase; margin-right:0.5rem;">Share:</span>
+                        <button onclick="shareWhatsApp()" class="icon-btn" style="border:1px solid var(--color-gray-200); width:32px; height:32px; font-size:0.8rem; color:#25D366;"><i class="fab fa-whatsapp"></i></button>
+                        <button onclick="copyProductLink()" class="icon-btn" style="border:1px solid var(--color-gray-200); width:32px; height:32px; font-size:0.8rem; color:var(--color-dark);"><i class="fas fa-link"></i></button>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        layout.innerHTML = leftColHTML + rightColHTML;
+    }
+
+    // Change Main Gallery image
+    window.changeMainImage = function(src, thumbEl) {
+        document.getElementById('main-product-image').src = src;
+        document.querySelectorAll('.thumb-img').forEach(el => el.classList.remove('active'));
+        if (thumbEl) thumbEl.classList.add('active');
+    };
+
+    // Qty Selector
+    window.changeQty = function(delta) {
+        selectedQuantity += delta;
+        if (selectedQuantity < 1) selectedQuantity = 1;
+        document.getElementById('qty-text').textContent = selectedQuantity;
+    };
+
+    // Add to Bag with custom Qty and options
+    window.handleAddToCartClick = function() {
+        const product = currentProduct;
+        if (!product) return;
+        
+        const isLooseGem = gemCategories.includes(product.category);
+        let options = null;
+        if (isLooseGem) {
+            options = {
+                wearType: selectedWearType,
+                price: calculateTotalPrice()
+            };
+            if (selectedWearType !== 'Loose') {
+                options.metal = selectedMetal;
+            }
+            if (selectedWearType === 'Ring') {
+                options.size = selectedSize;
+            }
+        }
+        
+        addToCart(product.id, selectedQuantity, options);
+        selectedQuantity = 1;
+        document.getElementById('qty-text').textContent = 1;
+    };
+
+    // Wishlist Toggle
+    window.handleWishlistToggle = function(e) {
+        toggleWishlistItem(currentProduct.id, e);
+        const inWish = isInWishlist(currentProduct.id);
+        const btn = document.getElementById('detail-wishlist-btn');
+        if (btn) {
+            btn.className = `btn ${inWish ? 'btn-danger' : 'btn-outline'}`;
+            btn.innerHTML = `<i class="${inWish ? 'fas' : 'far'} fa-heart" style="${inWish ? 'color:var(--color-white)' : 'color:var(--color-red)'}"></i>`;
+        }
+    };
+
+    // Share Options
+    window.shareWhatsApp = function() {
+        const text = `Take a look at this stunning ${currentProduct.name} on VijayKumar Diamonds & Gems: ${window.location.href}`;
+        window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text)}`, '_blank');
+    };
+
+    window.copyProductLink = function() {
+        navigator.clipboard.writeText(window.location.href).then(() => {
+            showToast('Product link copied to clipboard', 'success');
+        });
+    };
+
+    // Tabs logic
+    window.switchTab = function(event, tabId) {
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.classList.remove('active');
+            btn.style.color = 'var(--color-gray-500)';
+            btn.style.borderBottomColor = 'transparent';
+        });
+        document.querySelectorAll('.tab-content').forEach(content => {
+            content.style.display = 'none';
+        });
+
+        event.currentTarget.classList.add('active');
+        event.currentTarget.style.color = 'var(--color-dark)';
+        event.currentTarget.style.borderBottomColor = 'var(--color-gold)';
+        document.getElementById(tabId).style.display = 'block';
+    };
+
+    // Render Tabs Contents
+    function renderTabsContent() {
+        // Tab 1: Description
+        const descTab = document.getElementById('tab-desc');
+        if (descTab) {
+            descTab.innerHTML = `
+                <p style="margin-bottom: 1rem;">This is an authentic <strong>${currentProduct.name}</strong> sourced from the finest mines of <strong>${currentProduct.origin || 'nature'}</strong>. Hand-selected by our master gemologists, it has been cut to unlock maximum brilliance, color saturation, and clarity.</p>
+                <p style="margin-bottom: 1rem;">It is highly recommended for astrological guidance due to its outstanding planetary synergy and purity. Every single facet has been crafted according to heritage techniques to ensure maximum planetary influence and beauty.</p>
+                <p>Includes a certified authentication card from a verified laboratory detailing the precise specifications of weight, clarity, cut, and treatment.</p>
+            `;
+        }
+
+        // Tab 2: Specifications Table
+        const specsTabTable = document.getElementById('specs-table-tab');
+        if (specsTabTable) {
+            specsTabTable.innerHTML = `
+                <tr style="border-bottom: 1px solid var(--color-gray-200);"><td style="padding: 0.75rem 0; font-weight:600; color:var(--color-gray-500);">Product ID</td><td style="padding: 0.75rem 0; font-weight:700; color:var(--color-dark); text-align:right;">VK-GEM-${currentProduct.id}</td></tr>
+                <tr style="border-bottom: 1px solid var(--color-gray-200);"><td style="padding: 0.75rem 0; font-weight:600; color:var(--color-gray-500);">Carat Weight</td><td style="padding: 0.75rem 0; font-weight:700; color:var(--color-dark); text-align:right;">${currentProduct.carat || 'N/A'}</td></tr>
+                <tr style="border-bottom: 1px solid var(--color-gray-200);"><td style="padding: 0.75rem 0; font-weight:600; color:var(--color-gray-500);">Cut / Shape</td><td style="padding: 0.75rem 0; font-weight:700; color:var(--color-dark); text-align:right;">${currentProduct.cut || 'N/A'}</td></tr>
+                <tr style="border-bottom: 1px solid var(--color-gray-200);"><td style="padding: 0.75rem 0; font-weight:600; color:var(--color-gray-500);">Color Grade</td><td style="padding: 0.75rem 0; font-weight:700; color:var(--color-dark); text-align:right;">${currentProduct.color || 'N/A'}</td></tr>
+                <tr style="border-bottom: 1px solid var(--color-gray-200);"><td style="padding: 0.75rem 0; font-weight:600; color:var(--color-gray-500);">Clarity</td><td style="padding: 0.75rem 0; font-weight:700; color:var(--color-dark); text-align:right;">${currentProduct.clarity || 'N/A'}</td></tr>
+                <tr style="border-bottom: 1px solid var(--color-gray-200);"><td style="padding: 0.75rem 0; font-weight:600; color:var(--color-gray-500);">Origin</td><td style="padding: 0.75rem 0; font-weight:700; color:var(--color-dark); text-align:right;">${currentProduct.origin || 'N/A'}</td></tr>
+                <tr style="border-bottom: 1px solid var(--color-gray-200);"><td style="padding: 0.75rem 0; font-weight:600; color:var(--color-gray-500);">Treatment</td><td style="padding: 0.75rem 0; font-weight:700; color:var(--color-dark); text-align:right;">${currentProduct.treatment || 'Natural / Untreated'}</td></tr>
+                <tr style="border-bottom: 1px solid var(--color-gray-200);"><td style="padding: 0.75rem 0; font-weight:600; color:var(--color-gray-500);">Certification</td><td style="padding: 0.75rem 0; font-weight:700; color:var(--color-dark); text-align:right;">${currentProduct.cert || 'Lab Certified'}</td></tr>
+            `;
+        }
+
+        // Tab 3: Reviews
+        document.getElementById('reviews-count-tab').textContent = currentProduct.reviews || 0;
+        document.getElementById('reviews-summary-text').textContent = `Average Rating: ${currentProduct.rating.toFixed(1)} (${currentProduct.reviews || 0} customer reviews)`;
+        
+        const reviewsList = document.getElementById('mock-reviews-list');
+        if (reviewsList) {
+            // Generate some mock reviews
+            const mockReviews = [
+                { name: 'Amit Verma', rating: 5, date: '14 May 2026', comment: 'Exquisite luster and beautiful clarity. The certification checked out perfectly with the lab database. Truly divine gemstone!' },
+                { name: 'Sujata Nair', rating: 4, date: '02 Apr 2026', comment: 'Very nice gemstone, color is pigeon blood red just as described. The delivery was fast and the luxury box packaging feels premium.' }
+            ];
+            
+            reviewsList.innerHTML = mockReviews.map(r => `
+                <div class="review-item">
+                    <div class="review-item-header">
+                        <strong>${r.name}</strong>
+                        <span class="review-item-date">${r.date}</span>
+                    </div>
+                    <div class="review-item-rating">
+                        ${generateStars(r.rating)}
+                    </div>
+                    <p class="review-item-comment">"${r.comment}"</p>
+                </div>
+            `).join('');
+        }
+    }
+
+    window.showReviewToast = function() {
+        showToast('Review forms are currently in read-only sandbox mode.', 'info');
+    };
+
+    // Render Related Products (same category, excluding current product)
+    function renderRelatedProducts() {
+        const container = document.getElementById('related-products');
+        if (!container) return;
+
+        const related = products.filter(p => p.category === currentProduct.category && p.id !== currentProduct.id).slice(0, 4);
+        
+        // If not enough related products, just show any bestsellers
+        if (related.length === 0) {
+            related.push(...products.filter(p => p.id !== currentProduct.id).slice(0, 4));
+        }
+
+        container.innerHTML = '';
+        related.forEach(product => {
+            const wrapper = document.createElement('div');
+            wrapper.className = 'featured-product-wrapper';
+            wrapper.innerHTML = renderProductCard(product);
+            container.appendChild(wrapper);
+        });
+    }
+
+    // Render Recently Viewed
+    function renderRecentlyViewed() {
+        const container = document.getElementById('recently-viewed-products');
+        const section = document.getElementById('recent-section');
+        if (!container || !section) return;
+
+        // Get recent IDs except current
+        const recentIds = recentlyViewed.filter(id => id !== currentProduct.id).slice(0, 4);
+        
+        if (recentIds.length === 0) {
+            section.style.display = 'none';
+            return;
+        }
+
+        section.style.display = 'block';
+        container.innerHTML = '';
+        recentIds.forEach(id => {
+            const product = getProduct(id);
+            if (product) {
+                const wrapper = document.createElement('div');
+                wrapper.className = 'featured-product-wrapper';
+                wrapper.innerHTML = renderProductCard(product);
+                container.appendChild(wrapper);
+            }
+        });
+    }
+</script>
+</body>
+</html>
