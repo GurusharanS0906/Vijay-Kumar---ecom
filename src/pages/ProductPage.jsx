@@ -15,6 +15,17 @@ export default function ProductPage() {
   const [selectedMetal, setSelectedMetal] = useState('');
   const [ringSize, setRingSize] = useState('');
   const [engravingText, setEngravingText] = useState('');
+  const [pincode, setPincode] = useState('');
+  const [deliveryResult, setDeliveryResult] = useState(null);
+
+  const checkPincode = () => {
+    if (pincode.length === 6 && /^\d+$/.test(pincode)) {
+      const delDate = new Date(Date.now() + 4 * 24 * 60 * 60 * 1000).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' });
+      setDeliveryResult({ success: true, message: `Estimated delivery by ${delDate}` });
+    } else {
+      setDeliveryResult({ success: false, message: 'Invalid PIN code.' });
+    }
+  };
 
   useEffect(() => {
     if (productId) addToRecentlyViewed(productId);
@@ -101,23 +112,55 @@ export default function ProductPage() {
 
           <p style={{ fontSize: '0.85rem', color: 'var(--color-gray-600)', marginBottom: 'var(--space-lg)', lineHeight: 1.6 }}>{product.desc}</p>
 
-          {/* Price */}
-          <div style={{ marginBottom: 'var(--space-lg)', borderTop: '1px solid var(--color-gray-100)', borderBottom: '1px solid var(--color-gray-100)', padding: 'var(--space-md) 0' }}>
+          {/* Transparent Pricing Breakdown */}
+          <div style={{ marginBottom: 'var(--space-md)' }}>
             <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.75rem', flexWrap: 'wrap' }}>
-              <span style={{ fontFamily: 'var(--font-serif)', fontSize: '2rem', fontWeight: 700, color: 'var(--color-dark)' }}>{formatPrice(finalPrice)}</span>
+              <span style={{ fontFamily: 'var(--font-serif)', fontSize: '2.5rem', fontWeight: 700, color: 'var(--color-dark)' }}>{formatPrice(finalPrice)}</span>
               {discount > 0 && (
                 <>
-                  <span style={{ fontSize: '1rem', color: 'var(--color-gray-400)', textDecoration: 'line-through' }}>{formatPrice(product.mrp + mountingPrice)}</span>
-                  <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--color-green)', background: 'rgba(34,197,94,0.08)', padding: '0.2rem 0.5rem', borderRadius: 'var(--radius-sm)' }}>{discount}% OFF</span>
+                  <span style={{ fontSize: '1.2rem', color: 'var(--color-gray-400)', textDecoration: 'line-through' }}>{formatPrice(product.mrp + mountingPrice)}</span>
+                  <span style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--color-green)', background: 'rgba(34,197,94,0.1)', padding: '0.2rem 0.6rem', borderRadius: 'var(--radius-sm)' }}>{discount}% OFF</span>
                 </>
               )}
             </div>
-            {mountingPrice > 0 && (
-              <p style={{ fontSize: '0.7rem', color: 'var(--color-gray-500)', marginTop: '0.3rem' }}>
-                Includes: Gemstone {formatPrice(product.price)} + {wearType} Mounting ({selectedMetal}) {formatPrice(mountingPrice)}
-              </p>
+            
+            <div className="emi-preview">
+              <i className="fas fa-credit-card"></i> EMI starts at {formatPrice(Math.round(finalPrice / 12))}/month. 
+            </div>
+
+            <div className="pricing-breakdown">
+              <div className="pricing-row">
+                <span>Gemstone Price</span>
+                <span>{formatPrice(product.price)}</span>
+              </div>
+              {mountingPrice > 0 && (
+                <div className="pricing-row">
+                  <span>{selectedMetal} ({wearType} Mounting)</span>
+                  <span>{formatPrice(mountingPrice)}</span>
+                </div>
+              )}
+              <div className="pricing-row total">
+                <span>Total Amount (Inclusive of GST)</span>
+                <span>{formatPrice(finalPrice)}</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Delivery & Pincode */}
+          <div style={{ marginBottom: 'var(--space-xl)', background: 'var(--color-white)', padding: '1rem', border: '1px solid var(--color-gray-200)', borderRadius: 'var(--radius-md)' }}>
+            <label style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--color-dark)', display: 'block' }}>
+              <i className="fas fa-truck" style={{ color: 'var(--color-gold)', marginRight: '6px' }}></i>
+              Check Delivery Estimate
+            </label>
+            <div className="pincode-checker">
+              <input type="text" placeholder="Enter Delivery Pincode" maxLength="6" value={pincode} onChange={e => setPincode(e.target.value)} />
+              <button onClick={checkPincode}>Check</button>
+            </div>
+            {deliveryResult && (
+              <div className={`pincode-result ${deliveryResult.success ? 'success' : 'error'}`}>
+                <i className={`fas fa-${deliveryResult.success ? 'check-circle' : 'exclamation-circle'}`}></i> {deliveryResult.message}
+              </div>
             )}
-            <p style={{ fontSize: '0.65rem', color: 'var(--color-gray-400)', marginTop: '0.3rem' }}>Prices inclusive of all taxes. Free insured shipping on orders above ₹50,000.</p>
           </div>
 
           {/* Specs Grid */}
@@ -195,7 +238,7 @@ export default function ProductPage() {
           )}
 
           {/* Action Buttons */}
-          <div style={{ display: 'flex', gap: 'var(--space-md)', marginBottom: 'var(--space-lg)' }}>
+          <div style={{ display: 'flex', gap: 'var(--space-md)', marginBottom: 'var(--space-sm)' }}>
             <button className="btn btn-gold btn-lg" style={{ flex: 2 }} onClick={handleAddToCart}>
               <i className="fas fa-shopping-bag" style={{ marginRight: 8 }}></i>Add to Bag
             </button>
@@ -204,12 +247,57 @@ export default function ProductPage() {
             </button>
           </div>
 
+          {/* Secondary CTA */}
+          <a href={`https://wa.me/919092716427?text=Hi,%20I%20need%20a%20free%20astrological%20consultation%20for%20the%20${encodeURIComponent(product.name)}`} target="_blank" rel="noreferrer" style={{ textDecoration: 'none' }}>
+            <button className="btn-astrologer">
+              <i className="fab fa-whatsapp"></i> Talk to Expert Astrologer
+            </button>
+          </a>
+
           {/* Trust Badges */}
-          <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', fontSize: '0.7rem', color: 'var(--color-gray-500)' }}>
-            <span><i className="fas fa-certificate" style={{ color: 'var(--color-gold)', marginRight: 4 }}></i>{product.cert} Certified</span>
-            <span><i className="fas fa-truck-fast" style={{ color: 'var(--color-gold)', marginRight: 4 }}></i>Free Shipping</span>
-            <span><i className="fas fa-shield-halved" style={{ color: 'var(--color-gold)', marginRight: 4 }}></i>10-Day Returns</span>
+          <div className="trust-badges-row">
+            <div className="trust-badge-item">
+              <i className="fas fa-certificate" style={{ color: 'var(--color-gold)', fontSize: '1.2rem' }}></i>
+              <div>
+                <span style={{ display: 'block', fontSize: '0.6rem', color: 'var(--color-gray-500)', textTransform: 'uppercase' }}>Certified by</span>
+                <span>{product.cert} Lab</span>
+              </div>
+            </div>
+            <div className="trust-badge-item">
+              <i className="fas fa-gem" style={{ color: 'var(--color-gold)', fontSize: '1.2rem' }}></i>
+              <div>
+                <span style={{ display: 'block', fontSize: '0.6rem', color: 'var(--color-gray-500)', textTransform: 'uppercase' }}>Guarantee</span>
+                <span>100% Natural</span>
+              </div>
+            </div>
           </div>
+
+          {/* Astrological Properties */}
+          {product.astrology && (
+            <div style={{ marginBottom: 'var(--space-xl)' }}>
+              <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: '1.2rem', fontWeight: 700, color: 'var(--color-dark)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <i className="fas fa-om" style={{ color: 'var(--color-gold)' }}></i> Astrological Properties
+              </h3>
+              <div className="astrology-grid">
+                <div className="astro-item">
+                  <span className="astro-item-label">Ruling Planet</span>
+                  <span className="astro-item-value">{product.astrology.planet}</span>
+                </div>
+                <div className="astro-item">
+                  <span className="astro-item-label">Wearing Finger</span>
+                  <span className="astro-item-value">{product.astrology.finger}</span>
+                </div>
+                <div className="astro-item">
+                  <span className="astro-item-label">Wearing Day</span>
+                  <span className="astro-item-value">{product.astrology.day}</span>
+                </div>
+                <div className="astro-item" style={{ gridColumn: '1 / -1' }}>
+                  <span className="astro-item-label">Vedic Mantra</span>
+                  <span className="astro-item-value" style={{ fontStyle: 'italic', color: 'var(--color-gold-dark)' }}>"{product.astrology.mantra}"</span>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
 

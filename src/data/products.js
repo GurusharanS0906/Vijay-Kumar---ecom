@@ -89,3 +89,25 @@ export const chatbotKnowledge = {
   email: "info@vijaykumardiamonds.com",
   hours: "Monday – Sunday: 9:00 AM — 10:00 PM (Open 7 days)",
 };
+
+// Map GemPundit style astrology & certification to existing products
+const astrologyMap = {
+  "Ruby": { planet: "Sun (Surya)", day: "Sunday", mantra: "Om Suryaya Namaha", finger: "Ring Finger" },
+  "Blue Sapphire": { planet: "Saturn (Shani)", day: "Saturday", mantra: "Om Sham Shanaischaraya Namaha", finger: "Middle Finger" },
+  "Emerald": { planet: "Mercury (Budh)", day: "Wednesday", mantra: "Om Budhaya Namaha", finger: "Little Finger" },
+  "Yellow Sapphire": { planet: "Jupiter (Guru)", day: "Thursday", mantra: "Om Gurave Namaha", finger: "Index Finger" },
+  "Pearl": { planet: "Moon (Chandra)", day: "Monday", mantra: "Om Chandraya Namaha", finger: "Little Finger" },
+  "Red Coral": { planet: "Mars (Mangal)", day: "Tuesday", mantra: "Om Mangalaya Namaha", finger: "Ring Finger" },
+  "Hessonite": { planet: "Rahu", day: "Saturday", mantra: "Om Rahave Namaha", finger: "Middle Finger" },
+  "Opal": { planet: "Venus (Shukra)", day: "Friday", mantra: "Om Shukraya Namaha", finger: "Index/Ring Finger" },
+  "Rings": { planet: "Varies", day: "Varies", mantra: "Varies", finger: "Varies" }
+};
+
+products.forEach(p => {
+  p.astrology = astrologyMap[p.category] || astrologyMap["Rings"];
+  p.certificationDetails = {
+    lab: p.cert || "Standard Lab",
+    type: p.treatment === "Natural" || p.treatment === "Unheated" ? "100% Natural & Untreated" : "Standard Treatment",
+    reportNo: "VK" + Math.floor(100000 + Math.random() * 900000)
+  };
+});

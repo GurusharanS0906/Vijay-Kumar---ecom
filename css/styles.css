@@ -3690,5 +3690,161 @@ textarea.form-input { resize: vertical; min-height: 100px; }
     }
 }
 
+/* ============================================
+   GEMPUNDIT PORTED FEATURES
+   ============================================ */
 
+/* Astrology Widget */
+.astrology-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    background: var(--color-white);
+    border: 1px solid var(--color-gray-200);
+    padding: 1.25rem;
+    border-radius: var(--radius-lg);
+    margin-top: 1rem;
+}
+.astro-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+.astro-item-label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-gray-500);
+    font-weight: 700;
+}
+.astro-item-value {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--color-dark);
+}
 
+/* Pricing Breakdown Table */
+.pricing-breakdown {
+    background: var(--color-ivory);
+    border: 1px dashed var(--color-gold);
+    border-radius: var(--radius-md);
+    padding: 1.25rem;
+    margin-top: 1rem;
+    font-size: 0.85rem;
+}
+.pricing-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.4rem 0;
+    color: var(--color-gray-600);
+}
+.pricing-row.total {
+    border-top: 1px solid rgba(212, 175, 55, 0.3);
+    margin-top: 0.5rem;
+    padding-top: 0.75rem;
+    font-weight: 800;
+    color: var(--color-dark);
+    font-size: 1rem;
+}
+
+/* Pincode Checker */
+.pincode-checker {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+    position: relative;
+}
+.pincode-checker input {
+    flex: 1;
+    padding: 0.6rem 1rem;
+    border: 1px solid var(--color-gray-200);
+    border-radius: var(--radius-full);
+    font-size: 0.85rem;
+    outline: none;
+    transition: border-color var(--duration-fast);
+}
+.pincode-checker input:focus {
+    border-color: var(--color-gold);
+}
+.pincode-checker button {
+    padding: 0 1.25rem;
+    background: var(--color-dark);
+    color: var(--color-white);
+    border: none;
+    border-radius: var(--radius-full);
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background var(--duration-fast);
+}
+.pincode-checker button:hover {
+    background: var(--color-gold-dark);
+}
+.pincode-result {
+    font-size: 0.8rem;
+    margin-top: 0.5rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+}
+.pincode-result.success { color: #10B981; }
+.pincode-result.error { color: var(--color-red); }
+
+/* Cert & Guarantee Badges */
+.trust-badges-row {
+    display: flex;
+    gap: 1rem;
+    margin: 1.5rem 0;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--color-gray-100);
+}
+.trust-badge-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--color-dark);
+    background: var(--color-white);
+    padding: 0.5rem 0.75rem;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--color-gray-100);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+}
+
+/* EMI Preview Text */
+.emi-preview {
+    font-size: 0.75rem;
+    color: var(--color-gray-500);
+    margin-top: 0.3rem;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+/* Secondary CTA - Astrologer */
+.btn-astrologer {
+    background: #25D366; /* WhatsApp Green */
+    color: white;
+    border: none;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 1rem;
+    font-size: 0.95rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: all var(--duration-normal) var(--ease-lux);
+    margin-top: 0.75rem;
+}
+.btn-astrologer:hover {
+    background: #1DA851;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(37, 211, 102, 0.2);
+}
