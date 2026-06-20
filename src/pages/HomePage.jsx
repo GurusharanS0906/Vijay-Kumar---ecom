@@ -45,59 +45,131 @@ export default function HomePage() {
 
   return (
     <>
-      {/* ═══ HERO SECTION (CAROUSEL) ═══ */}
-      <section className="hero-section hero-home-section" style={{ padding: 0, borderBottom: 'none' }}>
-        <div className="hero-bg hero-home-bg" style={{ backgroundImage: "url('/images/nine_gemstones_banner.png')" }}></div>
-        <div className="hero-overlay-bottom-blend"></div>
+      {/* ═══ SILK HERO SECTION ═══ */}
+      <section className="silk-hero-section">
+        <div className="container silk-hero-container">
+          
+          {/* Left: Typography & Search Form */}
+          <div className="silk-hero-left">
+            <span className="silk-hero-subtitle">Timeless Beauty, Uniquely Yours</span>
+            <h1 className="silk-hero-title">
+              Find Your Right<br/>
+              <span className="gold-text">Gemstone</span>
+            </h1>
 
-        <div className="hero-slider-wrapper">
-          <div className="hero-glass-card">
-            <div className="hero-slider-container" style={{ transform: `translateX(-${currentSlide * 25}%)` }}>
-              {/* Slide 1 */}
-              <div className="hero-slide">
-                <div className="hero-slide-text">
-                  <span className="hero-tagline">The New Standard</span>
-                  <h2 className="hero-title">Real Gems. <em>Real Value.</em></h2>
-                  <p className="hero-subtitle">Discover GIA, GRS &amp; IGI certified natural diamonds and precious gemstones — handpicked for brilliance, delivered with trust.</p>
-                </div>
-                <Link to="/shop" className="btn btn-gold btn-sm" style={{ flexShrink: 0 }}>Explore Collection <i className="fas fa-arrow-right" style={{ marginLeft: 8 }}></i></Link>
+            <div className="silk-hero-form">
+              <div className="silk-radio-group">
+                <label className="silk-radio-label">
+                  <input type="radio" name="finder_type" defaultChecked />
+                  <span>By Gemstone</span>
+                </label>
+                <label className="silk-radio-label">
+                  <input type="radio" name="finder_type" />
+                  <span>By Purpose</span>
+                </label>
               </div>
-              {/* Slide 2 */}
-              <div className="hero-slide">
-                <div className="hero-slide-text">
-                  <span className="hero-tagline">Exclusive Concierge</span>
-                  <h2 className="hero-title">Free Astrological <em>Consultation</em></h2>
-                  <p className="hero-subtitle">Struggling to find the perfect stone? Let our certified gemologists and Vedic astrologers guide you based on your birth charts.</p>
+
+              <div className="silk-select-group">
+                <div className="silk-select-wrapper">
+                  <svg className="silk-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M6 3h12l4 6-10 13L2 9z"/></svg>
+                  <select className="silk-select">
+                    <option value="">Select Gemstone</option>
+                    <option>Yellow Sapphire</option>
+                    <option>Blue Sapphire</option>
+                    <option>Emerald</option>
+                    <option>Ruby</option>
+                    <option>Pearl</option>
+                    <option>Red Coral</option>
+                    <option>Hessonite</option>
+                    <option>Opal</option>
+                  </select>
                 </div>
-                <Link to="/contact?subject=Astrological Consultation" className="btn btn-gold btn-sm" style={{ flexShrink: 0 }}>Book Free Consult <i className="fas fa-chevron-right" style={{ marginLeft: 8 }}></i></Link>
+                <div className="silk-select-wrapper">
+                  <svg className="silk-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+                  <select className="silk-select">
+                    <option value="">Select Carat Weight</option>
+                    <option>1 – 2 Carats</option>
+                    <option>2 – 4 Carats</option>
+                    <option>4 – 6 Carats</option>
+                    <option>6 – 10 Carats</option>
+                    <option>10+ Carats</option>
+                  </select>
+                </div>
+                <div className="silk-select-wrapper">
+                  <svg className="silk-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+                  <select className="silk-select">
+                    <option value="">Select Budget</option>
+                    <option>Under ₹10,000</option>
+                    <option>₹10,000 – ₹50,000</option>
+                    <option>₹50,000 – ₹1,00,000</option>
+                    <option>₹1,00,000 – ₹5,00,000</option>
+                    <option>₹5,00,000+</option>
+                  </select>
+                </div>
               </div>
-              {/* Slide 3 */}
-              <div className="hero-slide">
-                <div className="hero-slide-text">
-                  <span className="hero-tagline">Handcrafted Gold</span>
-                  <h2 className="hero-title">Bespoke Ring <em>Customization</em></h2>
-                  <p className="hero-subtitle">Mount your selected natural gemstone in 18K/22K hallmarked gold rings. Crafted to absolute perfection.</p>
-                </div>
-                <Link to="/contact?subject=Bespoke Customization" className="btn btn-gold btn-sm" style={{ flexShrink: 0 }}>Start Designing <i className="fas fa-chevron-right" style={{ marginLeft: 8 }}></i></Link>
-              </div>
-              {/* Slide 4 */}
-              <div className="hero-slide">
-                <div className="hero-slide-text">
-                  <span className="hero-tagline">Natural Splendor</span>
-                  <h2 className="hero-title">20% Grand Launch <em>Special Offer</em></h2>
-                  <p className="hero-subtitle">Celebrate the opening of our flagship online store with an instant 20% discount on loose gemstones and rings. Code: <strong>VK20</strong></p>
-                </div>
-                <Link to="/shop" className="btn btn-gold btn-sm" style={{ flexShrink: 0 }}>Shop Collection <i className="fas fa-arrow-right" style={{ marginLeft: 8 }}></i></Link>
+
+              <button className="silk-search-btn" onClick={() => window.location.href='/shop'}>
+                Find My Gemstone &rarr;
+              </button>
+
+              <div className="silk-advanced-search">
+                <Link to="/shop">Browse Full Collection &rarr;</Link>
               </div>
             </div>
+          </div>
 
-            <button className="hero-arrow prev" onClick={() => moveSlide(-1)} aria-label="Previous slide"><i className="fas fa-chevron-left"></i></button>
-            <button className="hero-arrow next" onClick={() => moveSlide(1)} aria-label="Next slide"><i className="fas fa-chevron-right"></i></button>
+          {/* Right: Gemstones & Rings */}
+          <div className="silk-hero-right">
+            <div className="silk-rings-display">
+              {/* Gemstones - desktop only, positioned above */}
+              <div className="silk-gemstones-wrapper">
+                <picture>
+                  <source media="(max-width: 992px)" srcSet="/images/tworingmobile_cropped.png" />
+                  <img src="/images/gemstones.png" alt="Precious Gemstones Collection" />
+                </picture>
+              </div>
+              {/* Two Rings - desktop shows full, mobile shows cropped */}
+              <div className="silk-two-rings-wrapper">
+                <picture>
+                  <source media="(max-width: 992px)" srcSet="/images/tworingmobile.png" />
+                  <img src="/images/two ring.png" alt="Gemstone Rings" />
+                </picture>
+              </div>
+            </div>
+          </div>
 
-            <div className="hero-dots-container">
-              {[0, 1, 2, 3].map(i => (
-                <span key={i} onClick={() => { goToSlide(i); resetTimer(); }} className={`hero-dot ${currentSlide === i ? 'active' : ''}`}></span>
-              ))}
+        </div>
+
+        {/* Trust Badges Bar */}
+        <div className="hero-trust-bar">
+          <div className="container trust-bar-container">
+            <div className="trust-item">
+              <svg className="trust-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M6 3h12l4 6-10 13L2 9z"/></svg>
+              <div className="trust-text">
+                <strong>Certified Gemstones</strong>
+                <span>Authentic & Lab Tested</span>
+              </div>
+            </div>
+            <div className="trust-item">
+              <svg className="trust-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              <div className="trust-text">
+                <strong>Secure Shopping</strong>
+                <span>Your data is protected</span>
+              </div>
+            </div>
+            <div className="trust-item">
+              <svg className="trust-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+              <div className="trust-text">
+                <strong>Free Insured Shipping</strong>
+                <span>On all orders</span>
+              </div>
+            </div>
+            <div className="trust-item">
+              <svg className="trust-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg>
+              <div className="trust-text">
+                <strong>30 Day Returns</strong>
+                <span>Hassle free returns</span>
+              </div>
             </div>
           </div>
         </div>

@@ -194,7 +194,7 @@ export default function CheckoutPage() {
         </div>
       </div>
 
-      <div style={{ display: currentStep === 3 ? 'block' : 'grid', gridTemplateColumns: currentStep === 3 ? '1fr' : '1fr 380px', gap: 'var(--space-xl)', alignItems: 'start' }}>
+      <div className={`checkout-layout-grid ${currentStep === 3 ? 'step-3' : ''}`}>
         
         {/* Left Column */}
         <div>

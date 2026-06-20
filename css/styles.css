@@ -3979,3 +3979,345 @@ textarea.form-input { resize: vertical; min-height: 100px; }
         grid-column: 1 / -1;
     }
 }
+
+/* ============================================
+   SILK HERO — PREMIUM REDESIGN
+   ============================================ */
+.silk-hero-section {
+    background-image: url('/images/hero_silk_marble_bg.png');
+    background-size: cover;
+    background-position: center top;
+    background-repeat: no-repeat;
+    min-height: calc(100vh - var(--header-height-mobile));
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Warm ivory overlay — left heavy for text contrast, clears on the right */
+.silk-hero-section::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        108deg,
+        rgba(253, 251, 247, 0.94) 0%,
+        rgba(253, 251, 247, 0.80) 38%,
+        rgba(253, 251, 247, 0.32) 62%,
+        rgba(253, 251, 247, 0.05) 100%
+    );
+    z-index: 0;
+}
+
+.silk-hero-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2.5rem;
+    width: 100%;
+    flex: 1;
+    padding: 4rem 0 9rem;
+    position: relative;
+    z-index: 1;
+}
+
+/* ── Left: Typography & Finder Form ── */
+.silk-hero-left {
+    flex: 0 0 auto;
+    width: 100%;
+    max-width: 490px;
+    z-index: 10;
+}
+
+.silk-hero-subtitle {
+    font-family: var(--font-sans);
+    font-size: 0.65rem;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--color-gold);
+    font-weight: 700;
+    margin-bottom: 1.1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+}
+.silk-hero-subtitle::before {
+    content: '';
+    display: inline-block;
+    width: 28px;
+    height: 1.5px;
+    background: var(--color-gold);
+    flex-shrink: 0;
+}
+
+.silk-hero-title {
+    font-family: var(--font-serif);
+    font-size: clamp(2.6rem, 3.8vw, 4.2rem);
+    color: var(--color-dark);
+    font-weight: 400;
+    line-height: 1.14;
+    margin-bottom: 2.25rem;
+    letter-spacing: -0.015em;
+}
+.gold-text {
+    color: var(--color-gold-dark);
+    font-style: italic;
+    display: block;
+}
+
+/* Finder Glass Card */
+.silk-hero-form {
+    display: flex;
+    flex-direction: column;
+    background: rgba(255, 255, 255, 0.78);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border: 1px solid rgba(212, 175, 55, 0.22);
+    border-radius: 20px;
+    padding: 1.75rem 1.75rem 1.5rem;
+    box-shadow:
+        0 8px 40px rgba(0, 0, 0, 0.06),
+        0 1px 0 rgba(255, 255, 255, 0.9) inset;
+    max-width: 440px;
+}
+
+/* Pill-toggle tab strip */
+.silk-radio-group {
+    display: flex;
+    gap: 0;
+    margin-bottom: 1.25rem;
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 50px;
+    padding: 3px;
+}
+.silk-radio-label {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    font-size: 0.76rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: var(--color-gray-500);
+    cursor: pointer;
+    padding: 8px 14px;
+    border-radius: 50px;
+    transition: background 0.22s var(--ease-smooth), color 0.22s, box-shadow 0.22s;
+    user-select: none;
+}
+.silk-radio-label:has(input:checked) {
+    background: var(--color-white);
+    color: var(--color-dark);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.09);
+}
+.silk-radio-label input[type="radio"] { display: none; }
+
+.silk-select-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 1.25rem;
+}
+.silk-select-wrapper {
+    position: relative;
+    width: 100%;
+}
+.silk-icon {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 15px;
+    height: 15px;
+    color: var(--color-gold);
+    pointer-events: none;
+    z-index: 1;
+}
+.silk-select {
+    width: 100%;
+    padding: 12px 16px 12px 40px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    border: 1.5px solid rgba(212, 175, 55, 0.2);
+    border-radius: 10px;
+    appearance: none;
+    background: rgba(255, 255, 255, 0.92);
+    color: var(--color-gray-600);
+    cursor: pointer;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+.silk-select:focus {
+    border-color: var(--color-gold);
+    box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
+    outline: none;
+}
+
+/* Gold CTA button */
+.silk-search-btn {
+    background: linear-gradient(135deg, #b5942e 0%, var(--color-gold) 55%, #e0c145 100%);
+    color: #2c1f00;
+    border: none;
+    padding: 15px 28px;
+    border-radius: 10px;
+    font-family: var(--font-sans);
+    font-size: 0.8rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    cursor: pointer;
+    width: 100%;
+    margin-bottom: 0.9rem;
+    transition: transform 0.25s var(--ease-lux), box-shadow 0.25s var(--ease-lux);
+    box-shadow: 0 4px 18px rgba(212, 175, 55, 0.38);
+}
+.silk-search-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 28px rgba(212, 175, 55, 0.5);
+}
+
+.silk-advanced-search { text-align: center; }
+.silk-advanced-search a {
+    color: var(--color-gray-400);
+    font-size: 0.76rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    transition: color 0.2s;
+}
+.silk-advanced-search a:hover { color: var(--color-gold-dark); }
+
+/* ── Right: Rings & Gemstones Stage ── */
+.silk-hero-right {
+    flex: 1 1 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    height: 560px;
+    min-width: 0;
+}
+
+.silk-rings-display {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+/* Gemstones — fills upper-right stage as backdrop */
+.silk-gemstones-wrapper {
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    transform: translateX(-48%);
+    width: min(640px, 110%);
+    z-index: 1;
+}
+.silk-gemstones-wrapper img {
+    width: 100%;
+    height: auto;
+    filter: drop-shadow(0 18px 42px rgba(0, 0, 0, 0.16));
+}
+
+/* Rings — focal hero product, centered over gemstones */
+.silk-two-rings-wrapper {
+    position: absolute;
+    bottom: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: min(580px, 102%);
+    z-index: 2;
+}
+.silk-two-rings-wrapper img {
+    width: 100%;
+    height: auto;
+    filter: drop-shadow(0 24px 54px rgba(0, 0, 0, 0.22));
+}
+
+/* ── Trust Badges Bar ── */
+.hero-trust-bar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(255, 255, 255, 0.82);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-top: 1px solid rgba(212, 175, 55, 0.16);
+    padding: 18px 0;
+    z-index: 5;
+}
+.trust-bar-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0;
+}
+.trust-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 1;
+    justify-content: center;
+    padding: 0 1rem;
+}
+.trust-item:not(:last-child) {
+    border-right: 1px solid rgba(212, 175, 55, 0.16);
+}
+.trust-icon {
+    width: 24px;
+    height: 24px;
+    color: var(--color-gold);
+    flex-shrink: 0;
+}
+.trust-text { display: flex; flex-direction: column; }
+.trust-text strong {
+    font-size: 0.76rem;
+    font-weight: 700;
+    color: var(--color-dark);
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+}
+.trust-text span {
+    font-size: 0.68rem;
+    color: var(--color-gray-500);
+    white-space: nowrap;
+}
+
+/* ── Responsive ── */
+@media (min-width: 993px) {
+    .silk-hero-section { min-height: calc(100vh - var(--header-height)); }
+}
+
+@media (max-width: 992px) {
+    .silk-hero-container {
+        flex-direction: column;
+        padding: 2.5rem 0 8rem;
+        gap: 1.5rem;
+        text-align: center;
+    }
+    .silk-hero-left { max-width: 100%; }
+    .silk-hero-subtitle { justify-content: center; }
+    .silk-hero-form { max-width: 100%; }
+    .silk-hero-right {
+        width: 100%;
+        height: 340px;
+        order: -1;
+    }
+    .silk-gemstones-wrapper { width: 100%; max-width: 360px; }
+    .silk-two-rings-wrapper { width: 100%; max-width: 380px; }
+    .trust-item:not(:last-child) { border-right: none; }
+    .trust-bar-container {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.5rem;
+    }
+    .trust-item { justify-content: flex-start; padding: 0.4rem 0.75rem; }
+}
+
+@media (max-width: 640px) {
+    .silk-hero-title { font-size: 2.4rem; }
+    .silk-hero-right { height: 280px; }
+    .trust-bar-container { grid-template-columns: 1fr; }
+    .trust-item { border-right: none !important; }
+}
